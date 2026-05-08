@@ -1605,7 +1605,7 @@ async function registerWithEmail() {
 async function loginWithGoogle() {
   const {error} = await sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.href }
+    options: { redirectTo: 'https://elife.wangshiang19890625.workers.dev' }
   });
   if(error) showToast('Google 登入失敗');
 }
