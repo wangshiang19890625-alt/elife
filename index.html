@@ -632,7 +632,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 <!-- PRODUCT DETAIL -->
 <div class="screen" id="s-detail">
   <div id="detail-content"></div>
-  <div id="detail-actions" style="position:fixed;bottom:72px;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:white;border-top:0.5px solid var(--border);padding:12px 20px;display:flex;gap:10px;z-index:150;box-shadow:0 -2px 10px rgba(139,101,67,0.1);"></div>
+  <div id="detail-actions" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:white;border-top:0.5px solid var(--border);padding:12px 20px calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:200;box-shadow:0 -2px 10px rgba(139,101,67,0.1);"></div>
 </div>
 
 <!-- EDIT PRODUCT -->
@@ -931,7 +931,7 @@ function openDetail(p) {
       <div style="font-size:11px;color:var(--brown);letter-spacing:1px;font-weight:500;margin-bottom:8px;">商品描述</div>
       <div style="font-size:13px;color:var(--mid);line-height:1.8;">${p.description}</div>
     </div>` : ''}
-    <div style="height:80px;"></div>`;
+    <div style="height:calc(80px + env(safe-area-inset-bottom));"></div>`;
 
   // 判斷是否為自己的商品
   const myName = profileData.name || '';
@@ -949,6 +949,8 @@ function openDetail(p) {
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById('s-detail').classList.add('on');
+  // 隱藏底部導覽列，讓行動按鈕不被蓋住
+  document.querySelector('.bnav').style.display = 'none';
   window.scrollTo(0,0);
 }
 
@@ -1160,6 +1162,8 @@ function switchTab(tab) {
   document.getElementById('s-' + tab).classList.add('on');
   const bn = document.getElementById('bn-' + tab);
   if(bn) bn.classList.add('on');
+  // 恢復底部導覽列
+  document.querySelector('.bnav').style.display = 'flex';
   window.scrollTo(0,0);
   if(tab === 'seller') loadMyProducts();
   if(tab === 'messages') loadMessages();
