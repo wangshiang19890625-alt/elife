@@ -1260,6 +1260,8 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   window.scrollTo(0,0);
+  // 確保底部導覽永遠顯示
+  document.querySelector('.bnav').style.display = 'flex';
 }
 
 function toggleSwitch(el) {
@@ -1504,10 +1506,15 @@ sb.auth.onAuthStateChange(async (event, session) => {
   if(session) {
     currentUser = session.user;
     updateNavForUser();
-    // 檢查是否已填過資料
     const {data} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
     if(!data) {
       showScreen('s-onboarding');
+    } else {
+      // 更新 profileData 從資料庫
+      if(data.name) profileData.name = data.name;
+      if(data.location) profileData.location = data.location;
+      if(data.avatar) profileData.avatar = data.avatar;
+      loadProfile();
     }
   } else {
     currentUser = null;
