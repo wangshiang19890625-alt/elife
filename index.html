@@ -796,7 +796,17 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 // Supabase 初始化
 const SUPABASE_URL = 'https://nhisgwdmmjyezgqeqimz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oaXNnd2RtbWp5ZXpncWVxaW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNjMzNjMsImV4cCI6MjA5MzczOTM2M30.vqmw6n8TXI3m9OfD17_z7nolc7vfmw9FULAgIq4yB7k';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce'
+  },
+  global: {
+    headers: {}
+  }
+});
 
 // 種類對應
 const catEmoji = {'孔雀魚':'🐟','鬥魚':'🐠','鼠婦':'🦗','空氣鳳梨':'🌿'};
@@ -938,16 +948,18 @@ function openDetail(p) {
   actions.innerHTML = `
     <button onclick="openChat()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💬 聯絡賣家</button>
     <button onclick="openOrder()" style="flex:2;padding:12px;border-radius:12px;border:none;background:var(--brown);color:white;font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">立即下單</button>`;
-  // 若已登入，從 Supabase 確認是否為自己的商品再更新按鈕
-  if(currentUser) {
-    sb.from('profiles').select('name').eq('id', currentUser.id).single().then(({data}) => {
+  // 若已登入，確認是否為自己的商品（含 clock skew 備用）
+  sb.auth.getSession().then(({data: {session}}) => {
+    const uid = session?.user?.id || currentUser?.id;
+    if(!uid) return;
+    sb.from('profiles').select('name').eq('id', uid).single().then(({data}) => {
       if(data && data.name && data.name === p.seller) {
         actions.innerHTML = `
           <button onclick="openReviews()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:white;color:var(--mid);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">⭐ 評價</button>
           <button onclick="openEditProduct()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✏️ 編輯</button>`;
       }
     });
-  }
+  });
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById('s-detail').classList.add('on');
