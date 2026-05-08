@@ -942,17 +942,21 @@ function openDetail(p) {
   if(currentUser) {
     sb.from('profiles').select('name').eq('id', currentUser.id).single().then(({data}) => {
       if(data && data.name && data.name === p.seller) {
+        // 賣家：把 actions 改為固定在 bnav 上方
+        actions.style.bottom = '72px';
         actions.innerHTML = `
           <button onclick="openReviews()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:white;color:var(--mid);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">⭐ 評價</button>
           <button onclick="openEditProduct()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✏️ 編輯</button>`;
+        document.querySelector('.bnav').style.display = 'flex';
       }
     });
   }
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById('s-detail').classList.add('on');
-  // 隱藏底部導覽列，讓行動按鈕不被蓋住
+  // 隱藏底部導覽列，讓買家按鈕不被蓋住
   document.querySelector('.bnav').style.display = 'none';
+  actions.style.bottom = '0';
   window.scrollTo(0,0);
 }
 
