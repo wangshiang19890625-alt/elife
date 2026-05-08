@@ -216,7 +216,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 .search-hero{background:var(--white);padding:16px 20px;border-bottom:0.5px solid var(--border);}
 
 /* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:white;border-top:0.5px solid var(--border);display:flex;padding:6px 0 10px;z-index:99;}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:white;border-top:0.5px solid var(--border);display:flex;padding:6px 0 10px;z-index:50;}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 0;}
 .bn-ic{font-size:20px;}
 .bn-lb{font-size:9px;color:var(--light);letter-spacing:0.5px;}
@@ -942,21 +942,16 @@ function openDetail(p) {
   if(currentUser) {
     sb.from('profiles').select('name').eq('id', currentUser.id).single().then(({data}) => {
       if(data && data.name && data.name === p.seller) {
-        // 賣家：把 actions 改為固定在 bnav 上方
-        actions.style.bottom = '72px';
         actions.innerHTML = `
           <button onclick="openReviews()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:white;color:var(--mid);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">⭐ 評價</button>
           <button onclick="openEditProduct()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✏️ 編輯</button>`;
-        document.querySelector('.bnav').style.display = 'flex';
       }
     });
   }
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById('s-detail').classList.add('on');
-  // 隱藏底部導覽列，讓買家按鈕不被蓋住
   document.querySelector('.bnav').style.display = 'none';
-  actions.style.bottom = '0';
   window.scrollTo(0,0);
 }
 
