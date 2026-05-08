@@ -1524,6 +1524,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
     currentUser = session.user;
     updateNavForUser();
     const {data, error} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    console.log('Profile result:', JSON.stringify({data, error, uid: currentUser.id}));
     if(error && !data) {
       // 查詢失敗（可能是 clock skew 或網路問題），不跳 onboarding，等待重試
       console.warn('Profile load error:', error.message);
