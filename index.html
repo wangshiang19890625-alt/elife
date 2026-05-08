@@ -1658,34 +1658,27 @@ async function doLogout() {
 loadCounts();
 loadProfile();
 
-// 頁面載入時立即檢查登入狀態，處理 Google OAuth callback
-sb.auth.getSession().then(({data: {session}}) => {
+// 頁面載入時立即檢查登入狀態，並載入 profile
+sb.auth.getSession().then(async ({data: {session}}) => {
   if(session) {
     currentUser = session.user;
     updateNavForUser();
-  }
-});
-
-// 處理 Google OAuth callback（URL 帶有 hash 或 code 參數）
-if(window.location.hash.includes('access_token') || window.location.search.includes('code=')) {
-  sb.auth.getSession().then(async ({data: {session}}) => {
-    if(session) {
-      currentUser = session.user;
-      updateNavForUser();
-      const {data} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-      if(!data) {
-        showScreen('s-onboarding');
-      } else {
-        if(data.name) profileData.name = data.name;
-        if(data.location) profileData.location = data.location;
-        if(data.avatar) profileData.avatar = data.avatar;
-        loadProfile();
-      }
-      // 清掉 URL 的 hash
+    const {data} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    console.log('getSession profile result:', JSON.stringify({data, uid: currentUser.id}));
+    if(data) {
+      if(data.name) profileData.name = data.name;
+      if(data.location) profileData.location = data.location;
+      if(data.avatar) profileData.avatar = data.avatar;
+      loadProfile();
+    } else {
+      showScreen('s-onboarding');
+    }
+    // 清掉 URL 的 hash/code
+    if(window.location.hash || window.location.search) {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  });
-}
+  }
+});
 </script>
 </body>
 </html>
