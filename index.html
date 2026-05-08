@@ -1647,6 +1647,7 @@ async function saveOnboarding() {
 async function doLogout() {
   if(!confirm('確定要登出嗎？')) return;
   await sb.auth.signOut();
+  localStorage.clear();
   currentUser = null;
   updateNavForGuest();
   showToast('已登出');
