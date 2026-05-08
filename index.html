@@ -934,7 +934,8 @@ function openDetail(p) {
     <div style="height:80px;"></div>`;
 
   // 判斷是否為自己的商品
-  const isOwner = currentUser && p.seller === (profileData.name || '');
+  const myName = profileData.name || '';
+  const isOwner = currentUser && myName !== '微物愛好者' && p.seller === myName;
   const actions = document.getElementById('detail-actions');
   if(isOwner) {
     actions.innerHTML = `
