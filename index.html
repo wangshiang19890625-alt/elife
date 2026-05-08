@@ -1523,15 +1523,34 @@ sb.auth.onAuthStateChange(async (event, session) => {
   if(session) {
     currentUser = session.user;
     updateNavForUser();
-    const {data} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-    if(!data) {
-      showScreen('s-onboarding');
-    } else {
+    const {data, error} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    if(error && !data) {
+      // 查詢失敗（可能是 clock skew 或網路問題），不跳 onboarding，等待重試
+      console.warn('Profile load error:', error.message);
+      // 只有新用戶（SIGNED_UP）才跳 onboarding
+      if(event === 'SIGNED_IN') {
+        // 再試一次
+        setTimeout(async () => {
+          const {data: data2} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+          if(!data2) {
+            showScreen('s-onboarding');
+          } else {
+            if(data2.name) profileData.name = data2.name;
+            if(data2.location) profileData.location = data2.location;
+            if(data2.avatar) profileData.avatar = data2.avatar;
+            loadProfile();
+          }
+        }, 2000);
+      }
+    } else if(data) {
       // 更新 profileData 從資料庫
       if(data.name) profileData.name = data.name;
       if(data.location) profileData.location = data.location;
       if(data.avatar) profileData.avatar = data.avatar;
       loadProfile();
+    } else {
+      // 真的沒有 profile，跳 onboarding
+      showScreen('s-onboarding');
     }
   } else {
     currentUser = null;
