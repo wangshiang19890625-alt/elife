@@ -172,6 +172,49 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 .guide-arr{margin-left:auto;color:var(--light);font-size:18px;}
 .sec-lbl{padding:14px 20px 8px;font-size:11px;color:var(--light);letter-spacing:1px;}
 
+/* MESSAGES */
+.msg-item{background:var(--white);border-bottom:0.5px solid var(--border);padding:14px 20px;display:flex;gap:12px;cursor:pointer;}
+.msg-item:hover{background:var(--cream);}
+.msg-avatar{width:44px;height:44px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.msg-info{flex:1;min-width:0;}
+.msg-name{font-size:13px;font-weight:500;margin-bottom:2px;}
+.msg-preview{font-size:11px;color:var(--light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-time{font-size:10px;color:var(--light);white-space:nowrap;}
+.msg-unread{width:8px;height:8px;border-radius:50%;background:var(--brown);margin-top:4px;flex-shrink:0;}
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 56px);}
+.chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;}
+.chat-bubble{max-width:75%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6;}
+.chat-bubble.mine{background:var(--brown);color:white;align-self:flex-end;border-radius:12px 12px 2px 12px;}
+.chat-bubble.theirs{background:white;color:var(--ink);align-self:flex-start;border-radius:12px 12px 12px 2px;border:0.5px solid var(--border);}
+.chat-time{font-size:10px;color:var(--light);margin-top:3px;}
+.chat-input-wrap{padding:12px 16px;border-top:0.5px solid var(--border);background:white;display:flex;gap:8px;}
+.chat-input{flex:1;border:0.5px solid var(--border);border-radius:20px;padding:8px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;outline:none;background:var(--cream);}
+.chat-send{background:var(--brown);color:white;border:none;border-radius:50%;width:38px;height:38px;font-size:16px;cursor:pointer;flex-shrink:0;}
+
+/* ORDERS */
+.order-wrap{padding:16px 20px;}
+.order-summary{background:white;border-radius:12px;border:0.5px solid var(--border);padding:14px;margin-bottom:12px;display:flex;gap:12px;align-items:center;}
+.order-thumb-lg{width:60px;height:60px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.order-info h3{font-size:14px;font-weight:500;margin-bottom:3px;}
+.order-info p{font-size:12px;color:var(--light);}
+.order-price{font-size:16px;font-weight:500;color:var(--brown);margin-top:4px;}
+.order-total-box{background:white;border-radius:12px;border:0.5px solid var(--border);padding:14px;margin-bottom:12px;}
+.order-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;}
+.order-row.total{border-top:0.5px solid var(--border);margin-top:6px;padding-top:12px;font-weight:500;font-size:15px;color:var(--brown);}
+
+/* REVIEWS */
+.review-item{background:white;border-bottom:0.5px solid var(--border);padding:14px 20px;}
+.review-stars{color:#F0A030;font-size:14px;margin-bottom:6px;}
+.review-name{font-size:12px;font-weight:500;margin-bottom:4px;}
+.review-comment{font-size:12px;color:var(--mid);line-height:1.7;}
+.review-time{font-size:10px;color:var(--light);margin-top:4px;}
+.star-select{display:flex;gap:6px;margin:8px 0;}
+.star-btn{font-size:24px;cursor:pointer;opacity:0.3;transition:opacity 0.2s;}
+.star-btn.on{opacity:1;}
+
+/* SEARCH */
+.search-hero{background:var(--white);padding:16px 20px;border-bottom:0.5px solid var(--border);}
+
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:white;border-top:0.5px solid var(--border);display:flex;padding:6px 0 10px;z-index:99;}
 .bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 0;}
@@ -190,7 +233,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 <nav class="nav">
   <div class="logo"><div class="logo-dot"></div>易生 Elife</div>
   <div class="nav-icons">
-    <span>🔔</span>
+    <span onclick="switchTab('messages')" style="cursor:pointer;">💬</span>
     <span id="nav-auth-btn" onclick="goAuth()" style="font-size:12px;color:var(--brown);cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:5px 12px;border:0.5px solid var(--brown-l);border-radius:16px;">登入</span>
   </div>
 </nav>
@@ -624,10 +667,127 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
   </div>
 </div>
 
+<!-- MESSAGES LIST -->
+<div class="screen" id="s-messages">
+  <div style="background:var(--white);padding:16px 20px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px;">
+    <button onclick="switchTab('home')" style="background:none;border:none;font-size:13px;color:var(--brown);cursor:pointer;">← 返回</button>
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;font-weight:500;">訊息</div>
+  </div>
+  <div id="messages-list"><div class="loading">載入中...</div></div>
+</div>
+
+<!-- CHAT -->
+<div class="screen" id="s-chat">
+  <div style="background:var(--white);padding:0 20px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px;height:56px;position:sticky;top:0;z-index:10;">
+    <button onclick="showScreen('s-messages')" style="background:none;border:none;font-size:13px;color:var(--brown);cursor:pointer;">← 返回</button>
+    <div id="chat-title" style="font-size:14px;font-weight:500;flex:1;"></div>
+  </div>
+  <div class="chat-wrap">
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-wrap">
+      <input class="chat-input" id="chat-input" placeholder="輸入訊息...">
+      <button class="chat-send" onclick="sendMessage()">↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER PAGE -->
+<div class="screen" id="s-order">
+  <div style="background:var(--white);padding:16px 20px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px;">
+    <button onclick="goBack()" style="background:none;border:none;font-size:13px;color:var(--brown);cursor:pointer;">← 返回</button>
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;font-weight:500;">確認下單</div>
+  </div>
+  <div class="order-wrap">
+    <div id="order-product-summary"></div>
+    <div class="form-sec" style="background:white;border-radius:12px;border:0.5px solid var(--border);padding:16px;margin-bottom:12px;">
+      <div class="form-sec-title">購買數量</div>
+      <div class="stock-row" style="margin-top:4px;">
+        <button class="stock-btn" onclick="chgOrderQty(-1)">－</button>
+        <div class="stock-num" id="order-qty">1</div>
+        <button class="stock-btn" onclick="chgOrderQty(1)">＋</button>
+        <span style="font-size:12px;color:var(--light);margin-left:8px;" id="order-stock-hint"></span>
+      </div>
+    </div>
+    <div class="form-sec" style="background:white;border-radius:12px;border:0.5px solid var(--border);padding:16px;margin-bottom:12px;">
+      <div class="form-sec-title">收件資料</div>
+      <div class="form-group"><label class="form-label">收件人姓名</label><input class="form-input" id="order-name" placeholder="請輸入姓名"></div>
+      <div class="form-group"><label class="form-label">手機號碼</label><input class="form-input" id="order-phone" type="tel" placeholder="09XX-XXX-XXX"></div>
+      <div class="form-group"><label class="form-label">收件地址</label><input class="form-input" id="order-address" placeholder="縣市、鄉鎮區、路街地址"></div>
+    </div>
+    <div class="form-sec" style="background:white;border-radius:12px;border:0.5px solid var(--border);padding:16px;margin-bottom:12px;">
+      <div class="form-sec-title">出貨方式</div>
+      <div class="tag-sel">
+        <div class="tag sel" onclick="selectShipping(this,'宅配',150)">宅配 +$150</div>
+        <div class="tag" onclick="selectShipping(this,'面交',0)">面交 免運</div>
+      </div>
+      <input type="hidden" id="order-shipping" value="宅配">
+      <input type="hidden" id="order-shipping-fee" value="150">
+    </div>
+    <div class="order-total-box">
+      <div class="order-row"><span>商品金額</span><span id="order-subtotal">$0</span></div>
+      <div class="order-row"><span>運費</span><span id="order-fee">$150</span></div>
+      <div class="order-row total"><span>合計</span><span id="order-total">$0</span></div>
+    </div>
+    <button class="form-btn" onclick="submitOrder()">確認下單 →</button>
+  </div>
+</div>
+
+<!-- ORDER SUCCESS -->
+<div class="screen" id="s-order-success">
+  <div style="padding:60px 20px;text-align:center;">
+    <div style="font-size:56px;margin-bottom:18px;">✅</div>
+    <div style="font-family:'Noto Serif TC',serif;font-size:20px;font-weight:500;margin-bottom:8px;">下單成功！</div>
+    <div style="font-size:13px;color:var(--light);line-height:1.8;margin-bottom:20px;">請在 24 小時內完成轉帳<br>轉帳後請通知賣家確認</div>
+    <div style="background:var(--cream);border-radius:12px;padding:16px;margin-bottom:24px;text-align:left;" id="order-transfer-info"></div>
+    <button class="form-btn" onclick="switchTab('profile')">查看我的訂單</button>
+  </div>
+</div>
+
+<!-- SEARCH RESULTS -->
+<div class="screen" id="s-search">
+  <div class="search-hero">
+    <div class="sbar">
+      <input type="text" id="search-input2" placeholder="搜尋品種、飼主、地區...">
+      <button onclick="doSearch2()">搜尋</button>
+    </div>
+  </div>
+  <div style="padding:10px 20px 6px;font-size:11px;color:var(--light);" id="search-count"></div>
+  <div id="search-results"></div>
+</div>
+
+<!-- REVIEWS -->
+<div class="screen" id="s-reviews">
+  <div style="background:var(--white);padding:16px 20px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px;">
+    <button onclick="goBack()" style="background:none;border:none;font-size:13px;color:var(--brown);cursor:pointer;">← 返回</button>
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;font-weight:500;" id="review-title">評價</div>
+  </div>
+  <div style="padding:16px 20px;">
+    <div class="form-sec" style="background:white;border-radius:12px;border:0.5px solid var(--border);padding:16px;margin-bottom:12px;">
+      <div class="form-sec-title">留下評價</div>
+      <div class="form-group">
+        <label class="form-label">評分</label>
+        <div class="star-select" id="star-select">
+          <span class="star-btn" onclick="selectStar(1)">★</span>
+          <span class="star-btn" onclick="selectStar(2)">★</span>
+          <span class="star-btn" onclick="selectStar(3)">★</span>
+          <span class="star-btn" onclick="selectStar(4)">★</span>
+          <span class="star-btn" onclick="selectStar(5)">★</span>
+        </div>
+        <input type="hidden" id="review-rating" value="0">
+      </div>
+      <div class="form-group"><label class="form-label">評論</label><textarea class="form-input form-textarea" id="review-comment" placeholder="分享你的購買體驗..."></textarea></div>
+      <button class="form-btn" onclick="submitReview()">送出評價</button>
+    </div>
+  </div>
+  <div class="sec-lbl">所有評價</div>
+  <div id="reviews-list"><div class="loading">載入中...</div></div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="bn on" id="bn-home" onclick="switchTab('home')"><div class="bn-ic">🏠</div><div class="bn-lb">首頁</div></div>
   <div class="bn" id="bn-explore" onclick="switchTab('explore')"><div class="bn-ic">🔍</div><div class="bn-lb">探索</div></div>
+  <div class="bn" id="bn-messages" onclick="switchTab('messages')"><div class="bn-ic">💬</div><div class="bn-lb">訊息</div></div>
   <div class="bn" id="bn-seller" onclick="switchTab('seller')"><div class="bn-ic">🌿</div><div class="bn-lb">飼主中心</div></div>
   <div class="bn" id="bn-profile" onclick="switchTab('profile')"><div class="bn-ic">👤</div><div class="bn-lb">我的</div></div>
 </div>
@@ -778,11 +938,12 @@ function openDetail(p) {
   const actions = document.getElementById('detail-actions');
   if(isOwner) {
     actions.innerHTML = `
+      <button onclick="openReviews()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:white;color:var(--mid);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">⭐ 評價</button>
       <button onclick="openEditProduct()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✏️ 編輯</button>`;
   } else {
     actions.innerHTML = `
-      <button style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💬 聯絡賣家</button>
-      <button style="flex:2;padding:12px;border-radius:12px;border:none;background:var(--brown);color:white;font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">立即下單</button>`;
+      <button onclick="openChat()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💬 聯絡賣家</button>
+      <button onclick="openOrder()" style="flex:2;padding:12px;border-radius:12px;border:none;background:var(--brown);color:white;font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">立即下單</button>`;
   }
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
@@ -1000,6 +1161,7 @@ function switchTab(tab) {
   if(bn) bn.classList.add('on');
   window.scrollTo(0,0);
   if(tab === 'seller') loadMyProducts();
+  if(tab === 'messages') loadMessages();
 }
 
 function switchSellerTab(tab) {
@@ -1114,6 +1276,222 @@ function toggleSwitch(el) {
 
 function doLogout() {
   if(confirm('確定要登出嗎？')) { showToast('已登出'); switchTab('home'); }
+}
+
+// ===== 搜尋 =====
+function doSearch() {
+  const keyword = document.getElementById('search-input').value.trim();
+  if(!keyword) { loadProducts('all'); return; }
+  document.getElementById('search-input2') && (document.getElementById('search-input2').value = keyword);
+  showScreen('s-search');
+  performSearch(keyword);
+}
+
+function doSearch2() {
+  const keyword = document.getElementById('search-input2').value.trim();
+  if(keyword) performSearch(keyword);
+}
+
+async function performSearch(keyword) {
+  document.getElementById('search-results').innerHTML = '<div class="loading">搜尋中...</div>';
+  const {data} = await sb.from('products').select('*')
+    .or(`name.ilike.%${keyword}%,seller.ilike.%${keyword}%,category.ilike.%${keyword}%,location.ilike.%${keyword}%`);
+  if(!data || data.length === 0) {
+    document.getElementById('search-count').textContent = `找不到「${keyword}」的結果`;
+    document.getElementById('search-results').innerHTML = `<div class="empty"><div class="ei">🔍</div>找不到相關商品</div>`;
+    return;
+  }
+  document.getElementById('search-count').textContent = `找到 ${data.length} 件商品`;
+  document.getElementById('search-results').innerHTML = `<div class="pgrid" style="padding:0 20px 20px;">${data.map(cardHTML).join('')}</div>`;
+}
+
+// ===== 訊息 =====
+let currentChat = null;
+
+async function loadMessages() {
+  const myName = profileData.name || '';
+  if(!myName || myName === '微物愛好者') {
+    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先登入才能查看訊息</div>`;
+    return;
+  }
+  const {data} = await sb.from('messages').select('*')
+    .or(`sender_name.eq.${myName},receiver_name.eq.${myName}`)
+    .order('created_at', {ascending: false});
+  if(!data || data.length === 0) {
+    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>還沒有任何訊息</div>`;
+    return;
+  }
+  const chats = {};
+  data.forEach(m => {
+    const other = m.sender_name === myName ? m.receiver_name : m.sender_name;
+    if(!chats[other]) chats[other] = {name: other, lastMsg: m.content, time: m.created_at, product: m.product_name};
+  });
+  document.getElementById('messages-list').innerHTML = Object.values(chats).map(c => `
+    <div class="msg-item" onclick="openChatWith('${c.name}','${c.product||''}')">
+      <div class="msg-avatar">🐟</div>
+      <div class="msg-info">
+        <div class="msg-name">${c.name}</div>
+        <div class="msg-preview">${c.product?`[${c.product}] `:''}${c.lastMsg}</div>
+      </div>
+      <div class="msg-time">${new Date(c.time).toLocaleDateString('zh-TW')}</div>
+    </div>`).join('');
+}
+
+async function openChat() {
+  if(!currentUser) { showToast('請先登入才能傳送訊息'); goAuth(); return; }
+  openChatWith(currentProduct.seller, currentProduct.name);
+}
+
+async function openChatWith(sellerName, productName) {
+  currentChat = {seller: sellerName, product: productName};
+  document.getElementById('chat-title').textContent = sellerName;
+  showScreen('s-chat');
+  await loadChatMessages();
+}
+
+async function loadChatMessages() {
+  const myName = profileData.name || '';
+  const other = currentChat.seller;
+  const {data} = await sb.from('messages').select('*')
+    .or(`and(sender_name.eq.${myName},receiver_name.eq.${other}),and(sender_name.eq.${other},receiver_name.eq.${myName})`)
+    .order('created_at', {ascending: true});
+  const container = document.getElementById('chat-messages');
+  if(!data || data.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--light);font-size:12px;padding:20px;">開始對話吧！</div>`;
+    return;
+  }
+  container.innerHTML = data.map(m => {
+    const isMine = m.sender_name === myName;
+    return `<div><div class="chat-bubble ${isMine?'mine':'theirs'}">${m.content}</div>
+      <div class="chat-time" style="text-align:${isMine?'right':'left'}">${new Date(m.created_at).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}</div></div>`;
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMessage() {
+  const content = document.getElementById('chat-input').value.trim();
+  if(!content) return;
+  const myName = profileData.name || '匿名用戶';
+  const {error} = await sb.from('messages').insert([{
+    sender_name: myName, receiver_name: currentChat.seller,
+    product_name: currentChat.product, content
+  }]);
+  if(error) { showToast('傳送失敗'); return; }
+  document.getElementById('chat-input').value = '';
+  loadChatMessages();
+}
+
+// ===== 下單 =====
+let orderQty = 1;
+let orderShippingFee = 150;
+
+function openOrder() {
+  if(!currentUser) { showToast('請先登入才能下單'); goAuth(); return; }
+  const p = currentProduct;
+  orderQty = 1;
+  const cls = catClass[p.category]||'default';
+  const em = catEmoji[p.category]||'🌿';
+  document.getElementById('order-product-summary').innerHTML = `
+    <div class="order-summary">
+      <div class="order-thumb-lg ${cls}">${em}</div>
+      <div class="order-info"><h3>${p.name}</h3><p>${p.seller} · ${p.location||''}</p><div class="order-price">$${p.price} / ${p.unit}</div></div>
+    </div>`;
+  document.getElementById('order-qty').textContent = '1';
+  document.getElementById('order-stock-hint').textContent = `庫存剩 ${p.stock} ${p.unit}`;
+  orderShippingFee = 150;
+  updateOrderTotal();
+  showScreen('s-order');
+}
+
+function chgOrderQty(d) {
+  orderQty = Math.max(1, Math.min(currentProduct.stock||99, orderQty+d));
+  document.getElementById('order-qty').textContent = orderQty;
+  updateOrderTotal();
+}
+
+function selectShipping(el, type, fee) {
+  document.querySelectorAll('#s-order .tag').forEach(t=>t.classList.remove('sel'));
+  el.classList.add('sel');
+  orderShippingFee = fee;
+  updateOrderTotal();
+}
+
+function updateOrderTotal() {
+  const subtotal = currentProduct.price * orderQty;
+  document.getElementById('order-subtotal').textContent = `$${subtotal}`;
+  document.getElementById('order-fee').textContent = orderShippingFee===0?'免費':`$${orderShippingFee}`;
+  document.getElementById('order-total').textContent = `$${subtotal+orderShippingFee}`;
+}
+
+async function submitOrder() {
+  const name = document.getElementById('order-name').value.trim();
+  const phone = document.getElementById('order-phone').value.trim();
+  const address = document.getElementById('order-address').value.trim();
+  if(!name||!phone||!address) { showToast('請填寫完整收件資料！'); return; }
+  const p = currentProduct;
+  const total = p.price*orderQty+orderShippingFee;
+  const {error} = await sb.from('orders').insert([{
+    product_id: p.id, seller: p.seller,
+    buyer_name: name, buyer_phone: phone, buyer_address: address,
+    quantity: orderQty, total_price: total,
+    shipping: document.getElementById('order-shipping').value, status: '待付款'
+  }]);
+  if(error) { showToast('下單失敗：'+error.message); return; }
+  document.getElementById('order-transfer-info').innerHTML = `
+    <div style="font-size:11px;color:var(--brown);font-weight:500;letter-spacing:1px;margin-bottom:10px;">轉帳資訊</div>
+    <div style="font-size:13px;color:var(--mid);line-height:2;">賣家：${p.seller}<br>商品：${p.name} × ${orderQty}<br>運費：${orderShippingFee===0?'免費（面交）':'$'+orderShippingFee}<br><strong style="color:var(--brown);">合計：$${total}</strong></div>`;
+  showScreen('s-order-success');
+}
+
+// ===== 評價 =====
+let reviewRating = 0;
+
+function openReviews() {
+  document.getElementById('review-title').textContent = currentProduct.name + ' 的評價';
+  reviewRating = 0;
+  document.querySelectorAll('.star-btn').forEach(s=>s.classList.remove('on'));
+  document.getElementById('review-comment').value = '';
+  loadReviews();
+  showScreen('s-reviews');
+}
+
+function selectStar(n) {
+  reviewRating = n;
+  document.querySelectorAll('.star-btn').forEach((s,i)=>s.classList.toggle('on',i<n));
+}
+
+async function loadReviews() {
+  const {data} = await sb.from('reviews').select('*').eq('product_id', currentProduct.id).order('created_at',{ascending:false});
+  if(!data||data.length===0) {
+    document.getElementById('reviews-list').innerHTML = `<div class="empty"><div class="ei">⭐</div>還沒有評價</div>`;
+    return;
+  }
+  const stars = r=>'★'.repeat(r)+'☆'.repeat(5-r);
+  document.getElementById('reviews-list').innerHTML = data.map(r=>`
+    <div class="review-item">
+      <div class="review-stars">${stars(r.rating)}</div>
+      <div class="review-name">${r.reviewer_name}</div>
+      <div class="review-comment">${r.comment}</div>
+      <div class="review-time">${new Date(r.created_at).toLocaleDateString('zh-TW')}</div>
+    </div>`).join('');
+}
+
+async function submitReview() {
+  if(!reviewRating) { showToast('請選擇評分！'); return; }
+  const comment = document.getElementById('review-comment').value.trim();
+  if(!comment) { showToast('請填寫評論內容！'); return; }
+  const p = currentProduct;
+  const {error} = await sb.from('reviews').insert([{
+    product_id: p.id, product_name: p.name,
+    reviewer_name: profileData.name||'匿名用戶',
+    seller_name: p.seller, rating: reviewRating, comment
+  }]);
+  if(error) { showToast('送出失敗'); return; }
+  showToast('評價已送出！⭐');
+  document.getElementById('review-comment').value='';
+  reviewRating=0;
+  document.querySelectorAll('.star-btn').forEach(s=>s.classList.remove('on'));
+  loadReviews();
 }
 
 // ===== AUTH =====
