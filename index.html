@@ -1625,6 +1625,14 @@ async function doLogout() {
 // ===== 初始載入 =====
 loadCounts();
 loadProfile();
+
+// 頁面載入時立即檢查登入狀態，避免 onAuthStateChange 太慢
+sb.auth.getSession().then(({data: {session}}) => {
+  if(session) {
+    currentUser = session.user;
+    updateNavForUser();
+  }
+});
 </script>
 </body>
 </html>
