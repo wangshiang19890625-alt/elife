@@ -794,6 +794,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 
 <script>
 // Supabase 初始化
+// Fix OAuth callback: convert query params to hash for Supabase to detect
 const SUPABASE_URL = 'https://nhisgwdmmjyezgqeqimz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oaXNnd2RtbWp5ZXpncWVxaW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNjMzNjMsImV4cCI6MjA5MzczOTM2M30.vqmw6n8TXI3m9OfD17_z7nolc7vfmw9FULAgIq4yB7k';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
@@ -1158,6 +1159,12 @@ async function deleteProduct(id) {
 
 // UI 函式
 function switchTab(tab) {
+  if (!currentUser && (tab === 'profile' || tab === 'seller')) {
+    showToast('請先登入才能查看此頁面');
+    goAuth();
+    return;
+  }
+
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.querySelectorAll('.bn').forEach(b => b.classList.remove('on'));
   document.getElementById('s-' + tab).classList.add('on');
@@ -1315,9 +1322,13 @@ async function performSearch(keyword) {
 let currentChat = null;
 
 async function loadMessages() {
+  if(!currentUser) {
+    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先登入才能查看訊息</div>`;
+    return;
+  }
   const myName = profileData.name || '';
   if(!myName || myName === '微物愛好者') {
-    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先登入才能查看訊息</div>`;
+    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先完成個人資料設定才能查看訊息</div>`;
     return;
   }
   const {data} = await sb.from('messages').select('*')
@@ -1526,6 +1537,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
             if(data2.location) profileData.location = data2.location;
             if(data2.avatar) profileData.avatar = data2.avatar;
             loadProfile();
+            localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
           }
         }, 2000);
       }
@@ -1535,6 +1547,7 @@ sb.auth.onAuthStateChange(async (event, session) => {
       if(data.location) profileData.location = data.location;
       if(data.avatar) profileData.avatar = data.avatar;
       loadProfile();
+      localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
     } else {
       // 真的沒有 profile，跳 onboarding
       showScreen('s-onboarding');
@@ -1618,24 +1631,37 @@ function selectRole(role) {
 async function saveOnboarding() {
   if(!currentUser) return;
   const name = document.getElementById('ob-name').value.trim();
+  const location = document.getElementById('ob-location').value.trim();
   if(!name) { showToast('請填寫暱稱'); return; }
   const {error} = await sb.from('profiles').upsert({
     id: currentUser.id,
     name,
-    location: document.getElementById('ob-location').value.trim(),
+    location,
     line_id: document.getElementById('ob-line').value.trim(),
     role: document.getElementById('ob-role').value,
     avatar: '🐟'
   });
   if(error) { showToast('儲存失敗，請再試一次'); return; }
+
+  profileData.name = name;
+  profileData.location = location;
+  profileData.avatar = '🐟';
+  localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
+  loadProfile();
+
   showToast('歡迎加入易生！🌿');
   switchTab('home');
 }
 
 async function doLogout() {
   if(!confirm('確定要登出嗎？')) return;
-  await sb.auth.signOut();
-  localStorage.clear();
+  const {error} = await sb.auth.signOut();
+  if(error) console.error('Sign out error:', error);
+
+  localStorage.removeItem('chuyuu_profile');
+  profileData = {name:"微物愛好者",location:"台中市",phone:"",email:"",avatar:"🐟"};
+  loadProfile();
+
   currentUser = null;
   updateNavForGuest();
   showToast('已登出');
@@ -1664,6 +1690,7 @@ async function initAuth() {
       if(data.location) profileData.location = data.location;
       if(data.avatar) profileData.avatar = data.avatar;
       loadProfile();
+      localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
     } else {
       showScreen('s-onboarding');
     }
