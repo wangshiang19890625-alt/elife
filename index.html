@@ -1658,8 +1658,14 @@ async function doLogout() {
 loadCounts();
 loadProfile();
 
-// 頁面載入時立即檢查登入狀態，並載入 profile
-sb.auth.getSession().then(async ({data: {session}}) => {
+// 處理登入狀態
+async function initAuth() {
+  // 如果 URL 有 code 參數，等 Supabase 處理完再抓 session
+  const hasCode = window.location.search.includes('code=');
+  if(hasCode) {
+    await new Promise(r => setTimeout(r, 1000));
+  }
+  const {data: {session}} = await sb.auth.getSession();
   if(session) {
     currentUser = session.user;
     updateNavForUser();
@@ -1673,12 +1679,13 @@ sb.auth.getSession().then(async ({data: {session}}) => {
     } else {
       showScreen('s-onboarding');
     }
-    // 清掉 URL 的 hash/code
-    if(window.location.hash || window.location.search) {
+    // 清掉 URL 的 code
+    if(window.location.search.includes('code=')) {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }
-});
+}
+initAuth();
 </script>
 </body>
 </html>
