@@ -1515,44 +1515,26 @@ async function submitReview() {
 let currentUser = null;
 let currentRole = 'buyer';
 
-// 監聽登入狀態
+// 載入 profile 共用函式
+async function fetchAndLoadProfile(uid, showOnboarding) {
+  const {data} = await sb.from('profiles').select('*').eq('id', uid).single();
+  if(data) {
+    profileData.name = data.name || '';
+    profileData.location = data.location || '台中市';
+    profileData.avatar = data.avatar || '🐟';
+    loadProfile();
+  } else if(showOnboarding) {
+    showScreen('s-onboarding');
+  }
+}
+
+// 監聽登入狀態（email 登入用）
 sb.auth.onAuthStateChange(async (event, session) => {
-  if(session) {
+  if(event === 'SIGNED_IN' && session) {
     currentUser = session.user;
     updateNavForUser();
-    const {data, error} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-    console.log('Profile result:', JSON.stringify({data, error, uid: currentUser.id}));
-    if(error && !data) {
-      // 查詢失敗（可能是 clock skew 或網路問題），不跳 onboarding，等待重試
-      console.warn('Profile load error:', error.message);
-      // 只有新用戶（SIGNED_UP）才跳 onboarding
-      if(event === 'SIGNED_IN') {
-        // 再試一次
-        setTimeout(async () => {
-          const {data: data2} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-          if(!data2) {
-            showScreen('s-onboarding');
-          } else {
-            if(data2.name) profileData.name = data2.name;
-            if(data2.location) profileData.location = data2.location;
-            if(data2.avatar) profileData.avatar = data2.avatar;
-            loadProfile();
-            localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
-          }
-        }, 2000);
-      }
-    } else if(data) {
-      // 更新 profileData 從資料庫
-      if(data.name) profileData.name = data.name;
-      if(data.location) profileData.location = data.location;
-      if(data.avatar) profileData.avatar = data.avatar;
-      loadProfile();
-      localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
-    } else {
-      // 真的沒有 profile，跳 onboarding
-      showScreen('s-onboarding');
-    }
-  } else {
+    await fetchAndLoadProfile(currentUser.id, true);
+  } else if(event === 'SIGNED_OUT') {
     currentUser = null;
     updateNavForGuest();
   }
@@ -1674,30 +1656,17 @@ loadProfile();
 
 // 處理登入狀態
 async function initAuth() {
-  // 如果 URL 有 code 參數，等 Supabase 處理完再抓 session
+  // 如果 URL 有 code 參數（Google OAuth），等 Supabase 處理完
   const hasCode = window.location.search.includes('code=');
   if(hasCode) {
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 1500));
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
   const {data: {session}} = await sb.auth.getSession();
   if(session) {
     currentUser = session.user;
     updateNavForUser();
-    const {data} = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-    console.log('getSession profile result:', JSON.stringify({data, uid: currentUser.id}));
-    if(data) {
-      if(data.name) profileData.name = data.name;
-      if(data.location) profileData.location = data.location;
-      if(data.avatar) profileData.avatar = data.avatar;
-      loadProfile();
-      localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
-    } else {
-      showScreen('s-onboarding');
-    }
-    // 清掉 URL 的 code
-    if(window.location.search.includes('code=')) {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
+    await fetchAndLoadProfile(currentUser.id, true);
   }
 }
 initAuth();
