@@ -1227,7 +1227,9 @@ function showToast(msg) {
 }
 
 // 個人資料
-let profileData = JSON.parse(localStorage.getItem('chuyuu_profile') || '{"name":"微物愛好者","location":"台中市","phone":"","email":"","avatar":"🐟"}');
+// 清除舊的 localStorage profile 資料
+localStorage.removeItem('chuyuu_profile');
+let profileData = {name:'',location:'台中市',phone:'',email:'',avatar:'🐟'};
 
 function loadProfile() {
   document.getElementById('profile-name').textContent = profileData.name;
