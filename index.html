@@ -453,7 +453,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
   <div class="profile-head" id="profile-head">
     <div class="p-avatar" id="profile-avatar" onclick="document.getElementById('avatar-picker').style.display='flex'">🐟</div>
     <div class="p-info">
-      <h3 id="profile-name">微物愛好者</h3>
+      <h3 id="profile-name"></h3>
       <p id="profile-location">台中市</p>
     </div>
     <button class="p-edit" onclick="showProfileEdit()">編輯</button>
@@ -1227,8 +1227,6 @@ function showToast(msg) {
 }
 
 // 個人資料
-// 清除舊的 localStorage profile 資料
-localStorage.removeItem('chuyuu_profile');
 let profileData = {name:'',location:'台中市',phone:'',email:'',avatar:'🐟'};
 
 function loadProfile() {
@@ -1329,7 +1327,7 @@ async function loadMessages() {
     return;
   }
   const myName = profileData.name || '';
-  if(!myName || myName === '微物愛好者') {
+  if(!myName) {
     document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先完成個人資料設定才能查看訊息</div>`;
     return;
   }
@@ -1661,7 +1659,7 @@ async function doLogout() {
   if(error) console.error('Sign out error:', error);
 
   localStorage.removeItem('chuyuu_profile');
-  profileData = {name:"微物愛好者",location:"台中市",phone:"",email:"",avatar:"🐟"};
+  profileData = {name:"",location:"台中市",phone:"",email:"",avatar:"🐟"};
   loadProfile();
 
   currentUser = null;
