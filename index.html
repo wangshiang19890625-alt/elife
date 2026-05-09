@@ -900,19 +900,7 @@ function cardHTML(p) {
 }
 
 // 搜尋
-async function doSearch() {
-  const keyword = document.getElementById('search-input').value.trim();
-  if(!keyword) { loadProducts('all'); return; }
-  switchTab('products');
-  document.getElementById('prod-title').textContent = `搜尋：${keyword}`;
-  document.getElementById('prod-content').innerHTML = '<div class="loading">搜尋中...</div>';
-  const {data} = await sb.from('products').select('*').or(`name.ilike.%${keyword}%,seller.ilike.%${keyword}%,category.ilike.%${keyword}%`);
-  if(!data || data.length === 0) {
-    document.getElementById('prod-content').innerHTML = `<div class="empty"><div class="ei">🔍</div>找不到「${keyword}」的結果</div>`;
-    return;
-  }
-  document.getElementById('prod-content').innerHTML = `<div class="pgrid">${data.map(cardHTML).join('')}</div>`;
-}
+
 
 // 商品詳細頁
 let currentProduct = null;
