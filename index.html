@@ -799,6 +799,17 @@ const SUPABASE_URL = 'https://nhisgwdmmjyezgqeqimz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oaXNnd2RtbWp5ZXpncWVxaW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNjMzNjMsImV4cCI6MjA5MzczOTM2M30.vqmw6n8TXI3m9OfD17_z7nolc7vfmw9FULAgIq4yB7k';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// 清除損壞的 session（避免卡在登入狀態）
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    // 沒有有效 session，清除所有舊資料
+    Object.keys(localStorage).forEach(k => {
+      if (k.includes('supabase') || k.includes('chuyuu')) localStorage.removeItem(k);
+    });
+  }
+})();
+
 // 種類對應
 const catEmoji = {'孔雀魚':'🐟','鬥魚':'🐠','鼠婦':'🦗','空氣鳳梨':'🌿'};
 const catClass = {'孔雀魚':'guppy','鬥魚':'betta','鼠婦':'isopod','空氣鳳梨':'airplant'};
