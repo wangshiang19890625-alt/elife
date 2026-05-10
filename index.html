@@ -1662,18 +1662,26 @@ loadProfile();
 
 // 處理登入狀態
 async function initAuth() {
-  // 如果 URL 有 code 參數（Google OAuth），等 Supabase 處理完
   const hasCode = window.location.search.includes('code=');
   if(hasCode) {
     await new Promise(r => setTimeout(r, 1500));
     window.history.replaceState({}, document.title, window.location.pathname);
   }
-  const {data: {session}} = await sb.auth.getSession();
-  if(session) {
-    currentUser = session.user;
-    updateNavForUser();
-    await fetchAndLoadProfile(currentUser.id, true);
+  const {data: {session}, error} = await sb.auth.getSession();
+  if(error || !session) {
+    // 沒有有效 session，清除舊資料，確保是未登入狀態
+    Object.keys(localStorage).forEach(k => {
+      if(k.includes('supabase') || k.includes('sb-') || k.includes('chuyuu')) {
+        localStorage.removeItem(k);
+      }
+    });
+    updateNavForGuest();
+    return;
   }
+  // 有 session，驗證是否還有效
+  currentUser = session.user;
+  updateNavForUser();
+  await fetchAndLoadProfile(currentUser.id, true);
 }
 initAuth();
 </script>
