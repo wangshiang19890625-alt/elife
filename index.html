@@ -1747,6 +1747,17 @@ async function doLogout() {
   switchTab('home');
 }
 
+// 偵測 LINE 瀏覽器，提示用外部瀏覽器開啟
+(function() {
+  const ua = navigator.userAgent;
+  if(ua.includes('Line')) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#06C755;color:white;padding:12px 16px;font-size:13px;font-family:"Noto Sans TC",sans-serif;text-align:center;';
+    banner.innerHTML = `📱 請點右上角 <b>⋯</b> → <b>在瀏覽器中開啟</b>，以使用完整功能`;
+    document.body.prepend(banner);
+  }
+})();
+
 // ===== 初始載入 =====
 loadCounts();
 loadProfile();
