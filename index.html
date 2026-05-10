@@ -797,17 +797,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 // Fix OAuth callback: convert query params to hash for Supabase to detect
 const SUPABASE_URL = 'https://nhisgwdmmjyezgqeqimz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oaXNnd2RtbWp5ZXpncWVxaW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNjMzNjMsImV4cCI6MjA5MzczOTM2M30.vqmw6n8TXI3m9OfD17_z7nolc7vfmw9FULAgIq4yB7k';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce'
-  },
-  global: {
-    headers: {}
-  }
-});
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // 種類對應
 const catEmoji = {'孔雀魚':'🐟','鬥魚':'🐠','鼠婦':'🦗','空氣鳳梨':'🌿'};
