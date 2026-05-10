@@ -947,7 +947,10 @@ function openDetail(p) {
   document.getElementById('detail-content').innerHTML = `
     ${imgHtml}
     <div style="background:var(--white);padding:18px 20px;border-bottom:0.5px solid var(--border);">
-      <div style="font-size:11px;color:var(--light);margin-bottom:4px;letter-spacing:0.5px;">${p.seller || ''} · ${p.location || ''}</div>
+      <div style="font-size:11px;color:var(--light);margin-bottom:4px;letter-spacing:0.5px;display:flex;justify-content:space-between;align-items:center;">
+        <span>${p.seller || ''} · ${p.location || ''}</span>
+        <span id="seller-rating" style="color:#F5A623;">載入中...</span>
+      </div>
       <div style="font-family:'Noto Serif TC',serif;font-size:20px;font-weight:500;margin-bottom:8px;">${p.name}</div>
       <div style="font-size:22px;font-weight:500;color:var(--brown);margin-bottom:10px;">$${p.price} <span style="font-size:13px;font-weight:400;color:var(--light)">/ ${p.unit}</span></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -960,6 +963,23 @@ function openDetail(p) {
       <div style="font-size:13px;color:var(--mid);line-height:1.8;">${p.description}</div>
     </div>` : ''}
     <div style="height:calc(80px + env(safe-area-inset-bottom));"></div>`;
+
+  // 載入賣家評分
+  fetch(`${SUPABASE_URL}/rest/v1/reviews?select=rating&seller_name=eq.${encodeURIComponent(p.seller)}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  }).then(r => r.json()).then(data => {
+    const el = document.getElementById('seller-rating');
+    if(!el) return;
+    if(!Array.isArray(data) || data.length === 0) {
+      el.textContent = '尚無評價';
+    } else {
+      const avg = (data.reduce((s,r) => s + r.rating, 0) / data.length).toFixed(1);
+      el.textContent = `⭐ ${avg} (${data.length})`;
+    }
+  }).catch(() => {
+    const el = document.getElementById('seller-rating');
+    if(el) el.textContent = '';
+  });
 
   // 預設先顯示買家按鈕，避免 Supabase 還沒回傳資料時按鈕消失
   const actions = document.getElementById('detail-actions');
@@ -1521,36 +1541,63 @@ function selectStar(n) {
 }
 
 async function loadReviews() {
-  const {data} = await sb.from('reviews').select('*').eq('product_id', currentProduct.id).order('created_at',{ascending:false});
-  if(!data||data.length===0) {
-    document.getElementById('reviews-list').innerHTML = `<div class="empty"><div class="ei">⭐</div>還沒有評價</div>`;
-    return;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/reviews?select=*&product_id=eq.${currentProduct.id}&order=created_at.desc`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    if(!Array.isArray(data) || data.length === 0) {
+      document.getElementById('reviews-list').innerHTML = `<div class="empty"><div class="ei">⭐</div>還沒有評價</div>`;
+      return;
+    }
+    const stars = r => '★'.repeat(r) + '☆'.repeat(5-r);
+    const avg = (data.reduce((s,r) => s + r.rating, 0) / data.length).toFixed(1);
+    document.getElementById('reviews-list').innerHTML = `
+      <div style="text-align:center;padding:16px;background:white;margin:0 20px 12px;border-radius:12px;border:0.5px solid var(--border);">
+        <div style="font-size:36px;font-weight:500;color:var(--brown);">${avg}</div>
+        <div style="color:#F5A623;font-size:20px;">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</div>
+        <div style="font-size:12px;color:var(--light);">${data.length} 則評價</div>
+      </div>
+      ${data.map(r => `
+        <div class="review-item">
+          <div class="review-stars">${stars(r.rating)}</div>
+          <div class="review-name">${r.reviewer_name}</div>
+          <div class="review-comment">${r.comment}</div>
+          <div class="review-time">${new Date(r.created_at).toLocaleDateString('zh-TW')}</div>
+        </div>`).join('')}`;
+  } catch(e) {
+    document.getElementById('reviews-list').innerHTML = `<div class="empty">載入失敗</div>`;
   }
-  const stars = r=>'★'.repeat(r)+'☆'.repeat(5-r);
-  document.getElementById('reviews-list').innerHTML = data.map(r=>`
-    <div class="review-item">
-      <div class="review-stars">${stars(r.rating)}</div>
-      <div class="review-name">${r.reviewer_name}</div>
-      <div class="review-comment">${r.comment}</div>
-      <div class="review-time">${new Date(r.created_at).toLocaleDateString('zh-TW')}</div>
-    </div>`).join('');
 }
 
 async function submitReview() {
+  if(!currentUser) { showToast('請先登入才能評價'); return; }
   if(!reviewRating) { showToast('請選擇評分！'); return; }
   const comment = document.getElementById('review-comment').value.trim();
   if(!comment) { showToast('請填寫評論內容！'); return; }
   const p = currentProduct;
-  const {error} = await sb.from('reviews').insert([{
-    product_id: p.id, product_name: p.name,
-    reviewer_name: profileData.name||'匿名用戶',
-    seller_name: p.seller, rating: reviewRating, comment
-  }]);
-  if(error) { showToast('送出失敗'); return; }
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/reviews`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      product_id: p.id, product_name: p.name,
+      reviewer_name: profileData.name || '匿名用戶',
+      seller_name: p.seller, rating: reviewRating, comment
+    })
+  });
+  if(!res.ok) { showToast('送出失敗'); return; }
   showToast('評價已送出！⭐');
-  document.getElementById('review-comment').value='';
-  reviewRating=0;
-  document.querySelectorAll('.star-btn').forEach(s=>s.classList.remove('on'));
+  document.getElementById('review-comment').value = '';
+  reviewRating = 0;
+  document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('on'));
   loadReviews();
 }
 
