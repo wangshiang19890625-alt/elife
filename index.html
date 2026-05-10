@@ -1518,13 +1518,17 @@ let currentRole = 'buyer';
 // 載入 profile 共用函式
 async function fetchAndLoadProfile(uid, showOnboarding) {
   const {data} = await sb.from('profiles').select('*').eq('id', uid).single();
-  if(data) {
+  if(data && data.name) {
     profileData.name = data.name || '';
     profileData.location = data.location || '台中市';
     profileData.avatar = data.avatar || '🐟';
     loadProfile();
   } else if(showOnboarding) {
-    showScreen('s-onboarding');
+    // 新用戶，跳到 onboarding 填資料
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+    document.getElementById('s-onboarding').classList.add('on');
+    document.querySelector('.bnav').style.display = 'none';
+    window.scrollTo(0,0);
   }
 }
 
