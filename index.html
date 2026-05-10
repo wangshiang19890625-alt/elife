@@ -1102,7 +1102,8 @@ async function addProduct() {
     description: desc,
     seller, location,
     stock: stockVal || 1,
-    image: imageUrl
+    image: imageUrl,
+    user_id: currentUser ? currentUser.id : null
   }]);
 
   if(error) {
