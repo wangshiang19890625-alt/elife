@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>易生 Elife — 讓生命，簡單流動</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -797,16 +797,12 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 // Fix OAuth callback: convert query params to hash for Supabase to detect
 const SUPABASE_URL = 'https://nhisgwdmmjyezgqeqimz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oaXNnd2RtbWp5ZXpncWVxaW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNjMzNjMsImV4cCI6MjA5MzczOTM2M30.vqmw6n8TXI3m9OfD17_z7nolc7vfmw9FULAgIq4yB7k';
-const _nativeFetch = window.fetch.bind(window);
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
     storage: window.localStorage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true
-  },
-  global: {
-    fetch: _nativeFetch
   }
 });
 
