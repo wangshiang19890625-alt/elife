@@ -521,10 +521,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     </div>
     <!-- 變更密碼 -->
     <div class="form-sec">
-      <div class="form-sec-title">變更密碼</div>
-      <div class="form-group"><label class="form-label">目前密碼</label><input class="form-input" id="edit-old-pw" type="password" placeholder="輸入目前密碼"></div>
-      <div class="form-group"><label class="form-label">新密碼</label><input class="form-input" id="edit-new-pw" type="password" placeholder="輸入新密碼"></div>
-      <div class="form-group"><label class="form-label">確認新密碼</label><input class="form-input" id="edit-confirm-pw" type="password" placeholder="再輸入一次新密碼"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" onclick="togglePasswordSection()">
+        <div class="form-sec-title" style="margin-bottom:0;">變更密碼</div>
+        <span id="pw-toggle-icon" style="color:var(--brown);font-size:13px;">展開 ›</span>
+      </div>
+      <div id="pw-section" style="display:none;margin-top:12px;">
+        <div class="form-group"><label class="form-label">目前密碼</label><input class="form-input" id="edit-old-pw" type="password" placeholder="輸入目前密碼"></div>
+        <div class="form-group"><label class="form-label">新密碼</label><input class="form-input" id="edit-new-pw" type="password" placeholder="輸入新密碼"></div>
+        <div class="form-group"><label class="form-label">確認新密碼</label><input class="form-input" id="edit-confirm-pw" type="password" placeholder="再輸入一次新密碼"></div>
+      </div>
     </div>
     <button class="form-btn" onclick="saveProfile()">儲存變更</button>
   </div>
@@ -1258,6 +1263,18 @@ function loadProfile() {
   document.getElementById('edit-email').value = profileData.email || '';
 }
 
+function togglePasswordSection() {
+  const sec = document.getElementById('pw-section');
+  const icon = document.getElementById('pw-toggle-icon');
+  if(sec.style.display === 'none') {
+    sec.style.display = 'block';
+    icon.textContent = '收起 ‹';
+  } else {
+    sec.style.display = 'none';
+    icon.textContent = '展開 ›';
+  }
+}
+
 function showProfileEdit() {
   loadProfile();
   showScreen('s-profile-edit');
@@ -1535,18 +1552,31 @@ let currentRole = 'buyer';
 
 // 載入 profile 共用函式
 async function fetchAndLoadProfile(uid, showOnboarding) {
-  const {data} = await sb.from('profiles').select('*').eq('id', uid).single();
-  if(data && data.name) {
-    profileData.name = data.name || '';
-    profileData.location = data.location || '台中市';
-    profileData.avatar = data.avatar || '🐟';
-    loadProfile();
-  } else if(showOnboarding) {
-    // 新用戶，跳到 onboarding 填資料
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
-    document.getElementById('s-onboarding').classList.add('on');
-    document.querySelector('.bnav').style.display = 'none';
-    window.scrollTo(0,0);
+  try {
+    const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+    const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+    const accessToken = tokenData?.access_token || SUPABASE_KEY;
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=*&id=eq.${uid}&limit=1`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    const arr = await res.json();
+    const data = Array.isArray(arr) ? arr[0] : null;
+    if(data && data.name) {
+      profileData.name = data.name || '';
+      profileData.location = data.location || '台中市';
+      profileData.avatar = data.avatar || '🐟';
+      loadProfile();
+    } else if(showOnboarding) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+      document.getElementById('s-onboarding').classList.add('on');
+      document.querySelector('.bnav').style.display = 'none';
+      window.scrollTo(0,0);
+    }
+  } catch(e) {
+    console.error('fetchAndLoadProfile error:', e);
   }
 }
 
