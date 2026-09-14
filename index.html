@@ -224,6 +224,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 
 /* TOAST */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:10px 20px;border-radius:20px;font-size:13px;z-index:200;display:none;white-space:nowrap;}
+
+/* ROLE BADGE in nav */
+.role-indicator{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--green-l);color:var(--green);margin-left:6px;}
+.role-indicator.seller{background:#FEF3E2;color:#C07830;}
+.role-indicator.admin{background:#F0EBF8;color:#7B5EA7;}
 </style>
 </head>
 <body>
@@ -271,14 +276,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
       <h1>易生 Elife</h1>
       <p>讓生命，簡單流動</p>
     </div>
-
-
     <div class="auth-tabs">
       <div class="auth-tab on" id="auth-tab-login" onclick="switchAuthTab('login')">登入</div>
       <div class="auth-tab" id="auth-tab-register" onclick="switchAuthTab('register')">註冊</div>
     </div>
-
-    <!-- 登入表單 -->
     <div id="auth-login">
       <button class="google-btn" onclick="loginWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.703-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
@@ -290,8 +291,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
       <button class="form-btn" onclick="loginWithEmail()">登入</button>
       <div class="auth-footer">還沒有帳號？<span style="color:var(--brown);cursor:pointer;" onclick="switchAuthTab('register')">立即註冊</span></div>
     </div>
-
-    <!-- 註冊表單 -->
     <div id="auth-register" style="display:none;">
       <button class="google-btn" onclick="loginWithGoogle()">
         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.703-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
@@ -371,14 +370,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     <div style="font-family:'Noto Serif TC',serif;font-size:20px;font-weight:400;margin-bottom:5px;letter-spacing:2px;">飼主中心</div>
     <div style="font-size:12px;color:var(--light);">讓更多人認識你身邊的小生命 · 易生 Elife 🌿</div>
   </div>
-
-  <!-- 後台分頁 -->
   <div style="display:flex;border-bottom:0.5px solid var(--border);background:var(--white);">
     <div id="stab-products" onclick="switchSellerTab('products')" style="flex:1;padding:12px 0;text-align:center;font-size:13px;color:var(--brown);border-bottom:2px solid var(--brown);cursor:pointer;font-weight:500;">我的商品</div>
     <div id="stab-add" onclick="switchSellerTab('add')" style="flex:1;padding:12px 0;text-align:center;font-size:13px;color:var(--light);border-bottom:2px solid transparent;cursor:pointer;">新增商品</div>
   </div>
-
-  <!-- 我的商品 -->
   <div id="seller-tab-products">
     <div class="seller-stats">
       <div class="stat-mini"><div class="stat-mini-val" id="stat-count">0</div><div class="stat-mini-label">上架中</div></div>
@@ -386,8 +381,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     </div>
     <div id="my-products-list"><div class="loading">載入中...</div></div>
   </div>
-
-  <!-- 新增商品 -->
   <div id="seller-tab-add" style="display:none;">
     <div class="form-wrap">
       <div class="form-sec">
@@ -457,11 +450,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     <div class="p-info">
       <h3 id="profile-name"></h3>
       <p id="profile-location">台中市</p>
+      <span id="profile-role-badge" style="display:none;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:4px;display:inline-block;"></span>
     </div>
     <button class="p-edit" onclick="showProfileEdit()">編輯</button>
   </div>
-
-  <!-- 頭像選擇器 -->
   <div id="avatar-picker" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.4);align-items:flex-end;">
     <div style="background:white;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:390px;margin:0 auto;">
       <div style="font-family:'Noto Serif TC',serif;font-size:16px;font-weight:500;margin-bottom:16px;display:flex;justify-content:space-between;">選擇頭像<span style="font-size:13px;color:var(--light);cursor:pointer;" onclick="document.getElementById('avatar-picker').style.display='none'">關閉</span></div>
@@ -479,11 +471,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
       </div>
     </div>
   </div>
-
   <div class="ptabs">
     <div class="ptab on" id="pt-tab-menu" onclick="switchPTab('menu')">設定</div>
   </div>
-
   <div id="pt-menu">
     <div class="menu-item" onclick="showProfileEdit()"><span class="m-icon">👤</span><span class="m-label">個人資料設定</span><span class="m-arr">›</span></div>
     <div class="menu-item" onclick="showScreen('s-notify-settings')"><span class="m-icon">🔔</span><span class="m-label">通知設定</span><span class="m-arr">›</span></div>
@@ -502,7 +492,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;font-weight:500;letter-spacing:1px;">個人資料設定</div>
   </div>
   <div class="form-wrap">
-    <!-- 頭像 -->
     <div class="form-sec">
       <div class="form-sec-title">頭像</div>
       <div style="display:flex;align-items:center;gap:14px;">
@@ -513,7 +502,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
         </div>
       </div>
     </div>
-    <!-- 基本資料 -->
     <div class="form-sec">
       <div class="form-sec-title">基本資料</div>
       <div class="form-group"><label class="form-label">暱稱</label><input class="form-input" id="edit-name" placeholder="你的暱稱"></div>
@@ -555,17 +543,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
         <div><div style="font-size:13px;font-weight:500;">訂單狀態更新</div><div style="font-size:11px;color:var(--light);">付款確認、出貨通知</div></div>
         <div class="toggle" onclick="this.classList.toggle('on')" style="width:44px;height:26px;border-radius:13px;background:#D0C8C0;position:relative;cursor:pointer;transition:background 0.3s;"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div></div>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
         <div><div style="font-size:13px;font-weight:500;">新訊息通知</div><div style="font-size:11px;color:var(--light);">買家、賣家的訊息</div></div>
         <div class="toggle on" onclick="toggleSwitch(this)" style="width:44px;height:26px;border-radius:13px;background:var(--green);position:relative;cursor:pointer;transition:background 0.3s;"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:21px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid var(--border);">
-        <div><div style="font-size:13px;font-weight:500;">收藏商品降價</div><div style="font-size:11px;color:var(--light);">你收藏的商品降價了</div></div>
-        <div class="toggle on" onclick="toggleSwitch(this)" style="width:44px;height:26px;border-radius:13px;background:var(--green);position:relative;cursor:pointer;transition:background 0.3s;"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:21px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
-        <div><div style="font-size:13px;font-weight:500;">平台公告</div><div style="font-size:11px;color:var(--light);">初遇的最新消息</div></div>
-        <div class="toggle" onclick="toggleSwitch(this)" style="width:44px;height:26px;border-radius:13px;background:#D0C8C0;position:relative;cursor:pointer;transition:background 0.3s;"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div></div>
       </div>
     </div>
     <button class="form-btn" onclick="showToast('通知設定已儲存 ✓');showScreen('s-profile')">儲存設定</button>
@@ -579,13 +559,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;font-weight:500;letter-spacing:1px;">付款方式</div>
   </div>
   <div class="form-wrap">
-    <div class="form-sec">
-      <div class="form-sec-title">已儲存帳號</div>
-      <div style="background:var(--cream);border-radius:10px;padding:14px;border:0.5px solid var(--border);margin-bottom:10px;">
-        <div style="font-size:13px;font-weight:500;margin-bottom:3px;">🏦 玉山銀行</div>
-        <div style="font-size:12px;color:var(--light);">帳號末四碼：1234</div>
-      </div>
-    </div>
     <div class="form-sec">
       <div class="form-sec-title">新增帳號</div>
       <div class="form-group"><label class="form-label">銀行名稱</label><input class="form-input" placeholder="例：玉山銀行"></div>
@@ -607,7 +580,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
   </div>
   <div style="padding:20px;font-size:13px;color:var(--mid);line-height:2;">
     <div style="font-family:'Noto Serif TC',serif;font-size:15px;font-weight:500;margin-bottom:12px;color:var(--ink);">易生 Elife 使用者條款</div>
-    <div style="margin-bottom:16px;"><strong>1. 平台性質</strong><br>初遇是一個提供台灣微型生物愛好者交流與交易的平台，平台不直接參與買賣，僅提供媒合服務。</div>
+    <div style="margin-bottom:16px;"><strong>1. 平台性質</strong><br>易生是一個提供台灣微型生物愛好者交流與交易的平台，平台不直接參與買賣，僅提供媒合服務。</div>
     <div style="margin-bottom:16px;"><strong>2. 賣家責任</strong><br>賣家須確保出售的生物健康狀況良好，並如實描述商品資訊。若有隱瞞或欺騙行為，平台有權下架帳號。</div>
     <div style="margin-bottom:16px;"><strong>3. 交易安全</strong><br>建議透過平台訊息系統聯繫，保留交易紀錄。平台不負責私下交易產生的糾紛。</div>
     <div style="margin-bottom:16px;"><strong>4. 禁止事項</strong><br>禁止販售保育類動物、病弱個體，或進行任何違法交易。</div>
@@ -633,9 +606,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
     </div>
     <div class="menu-item" style="border-radius:12px;margin-bottom:10px;border:0.5px solid var(--border);">
       <span class="m-icon">📧</span><span class="m-label">Email 客服<br><span style="font-size:11px;color:var(--light);">support@elife.tw</span></span><span class="m-arr">›</span>
-    </div>
-    <div class="menu-item" style="border-radius:12px;margin-bottom:10px;border:0.5px solid var(--border);">
-      <span class="m-icon">📸</span><span class="m-label">Instagram<br><span style="font-size:11px;color:var(--light);">@elife.tw</span></span><span class="m-arr">›</span>
     </div>
     <div style="text-align:center;margin-top:20px;font-size:12px;color:var(--light);">服務時間：週一至週五 10:00–18:00</div>
   </div>
@@ -805,8 +775,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--i
 </div>
 
 <script>
-// Supabase 初始化
-// Fix OAuth callback: convert query params to hash for Supabase to detect
 const SUPABASE_URL = 'https://nhisgwdmmjyezgqeqimz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oaXNnd2RtbWp5ZXpncWVxaW16Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNjMzNjMsImV4cCI6MjA5MzczOTM2M30.vqmw6n8TXI3m9OfD17_z7nolc7vfmw9FULAgIq4yB7k';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
@@ -818,18 +786,15 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   }
 });
 
-// 清除損壞的 session（避免卡在登入狀態）
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
-    // 沒有有效 session，清除所有舊資料
     Object.keys(localStorage).forEach(k => {
       if (k.includes('supabase') || k.includes('chuyuu')) localStorage.removeItem(k);
     });
   }
 })();
 
-// 種類對應
 const catEmoji = {'孔雀魚':'🐟','鬥魚':'🐠','鼠婦':'🦗','空氣鳳梨':'🌿'};
 const catClass = {'孔雀魚':'guppy','鬥魚':'betta','鼠婦':'isopod','空氣鳳梨':'airplant'};
 const catCountId = {'孔雀魚':'count-guppy','鬥魚':'count-betta','鼠婦':'count-isopod','空氣鳳梨':'count-airplant'};
@@ -839,65 +804,50 @@ let selectedCat = '';
 let selectedUnit = '隻';
 let currentCat = 'all';
 
-// 載入時取得各種類數量
 async function loadCounts() {
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=category`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
-      }
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
     const data = await res.json();
-    if(!Array.isArray(data)) {
+    if (!Array.isArray(data)) {
       ['孔雀魚','鬥魚','鼠婦','空氣鳳梨'].forEach(cat => {
         const el = document.getElementById(catCountId[cat]);
-        if(el) el.textContent = '0 位飼主分享';
+        if (el) el.textContent = '0 位飼主分享';
       });
       return;
     }
     ['孔雀魚','鬥魚','鼠婦','空氣鳳梨'].forEach(cat => {
       const count = data.filter(p => p.category === cat).length;
       const el = document.getElementById(catCountId[cat]);
-      if(el) el.textContent = `${count} 位飼主分享`;
+      if (el) el.textContent = `${count} 位飼主分享`;
     });
   } catch(e) {
     ['孔雀魚','鬥魚','鼠婦','空氣鳳梨'].forEach(cat => {
       const el = document.getElementById(catCountId[cat]);
-      if(el) el.textContent = '0 位飼主分享';
+      if (el) el.textContent = '0 位飼主分享';
     });
   }
 }
 
-// 載入商品
 async function loadProducts(cat) {
   currentCat = cat;
   switchTab('products');
   document.getElementById('prod-title').textContent = cat === 'all' ? '全部生物' : (catEmoji[cat]||'') + ' ' + cat;
   document.getElementById('prod-content').innerHTML = '<div class="loading">載入中...</div>';
-
   try {
     let url = `${SUPABASE_URL}/rest/v1/products?select=*&order=created_at.desc`;
-    if(cat !== 'all') url += `&category=eq.${encodeURIComponent(cat)}`;
+    if (cat !== 'all') url += `&category=eq.${encodeURIComponent(cat)}`;
     const res = await fetch(url, {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
     const data = await res.json();
     const error = !Array.isArray(data) ? data : null;
-
-    if(error) {
-      document.getElementById('prod-content').innerHTML = `<div class="empty"><div class="ei">⚠️</div>載入失敗</div>`;
-      return;
-    }
-
-    if(!data || data.length === 0) {
-      document.getElementById('prod-content').innerHTML = `<div class="empty"><div class="ei">🌱</div>這裡還沒有商品<br>成為第一個分享的人吧！</div>`;
-      return;
-    }
-
-    if(cat === 'all') {
+    if (error) { document.getElementById('prod-content').innerHTML = `<div class="empty"><div class="ei">⚠️</div>載入失敗</div>`; return; }
+    if (!data || data.length === 0) { document.getElementById('prod-content').innerHTML = `<div class="empty"><div class="ei">🌱</div>這裡還沒有商品<br>成為第一個分享的人吧！</div>`; return; }
+    if (cat === 'all') {
       const grouped = {};
-      data.forEach(p => { if(!grouped[p.category]) grouped[p.category] = []; grouped[p.category].push(p); });
+      data.forEach(p => { if (!grouped[p.category]) grouped[p.category] = []; grouped[p.category].push(p); });
       document.getElementById('prod-content').innerHTML = Object.entries(grouped).map(([k,v]) =>
         `<div class="sec-head"><h3>${catEmoji[k]||'🌿'} ${k}</h3><span>${v.length} 件</span></div><div class="pgrid">${v.map(cardHTML).join('')}</div>`
       ).join('');
@@ -929,10 +879,6 @@ function cardHTML(p) {
   </div>`;
 }
 
-// 搜尋
-
-
-// 商品詳細頁
 let currentProduct = null;
 let editImageFile = null;
 
@@ -964,40 +910,33 @@ function openDetail(p) {
     </div>` : ''}
     <div style="height:calc(80px + env(safe-area-inset-bottom));"></div>`;
 
-  // 載入賣家評分
   fetch(`${SUPABASE_URL}/rest/v1/reviews?select=rating&seller_name=eq.${encodeURIComponent(p.seller)}`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   }).then(r => r.json()).then(data => {
     const el = document.getElementById('seller-rating');
-    if(!el) return;
-    if(!Array.isArray(data) || data.length === 0) {
-      el.textContent = '尚無評價';
-    } else {
+    if (!el) return;
+    if (!Array.isArray(data) || data.length === 0) { el.textContent = '尚無評價'; }
+    else {
       const avg = (data.reduce((s,r) => s + r.rating, 0) / data.length).toFixed(1);
       el.textContent = `⭐ ${avg} (${data.length})`;
     }
-  }).catch(() => {
-    const el = document.getElementById('seller-rating');
-    if(el) el.textContent = '';
-  });
+  }).catch(() => { const el = document.getElementById('seller-rating'); if (el) el.textContent = ''; });
 
-  // 預設先顯示買家按鈕，避免 Supabase 還沒回傳資料時按鈕消失
   const actions = document.getElementById('detail-actions');
+  // 預設買家按鈕
   actions.innerHTML = `
     <button onclick="openChat()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💬 聯絡賣家</button>
     <button onclick="openOrder()" style="flex:2;padding:12px;border-radius:12px;border:none;background:var(--brown);color:white;font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">立即下單</button>`;
-  // 若已登入，確認是否為自己的商品（含 clock skew 備用）
-  sb.auth.getSession().then(({data: {session}}) => {
-    const uid = session?.user?.id || currentUser?.id;
-    if(!uid) return;
-    sb.from('profiles').select('name').eq('id', uid).single().then(({data}) => {
-      if(data && data.name && data.name === p.seller) {
-        actions.innerHTML = `
-          <button onclick="openReviews()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:white;color:var(--mid);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">⭐ 評價</button>
-          <button onclick="openEditProduct()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✏️ 編輯</button>`;
-      }
-    });
-  });
+
+  // 若是自己的商品或 admin，顯示編輯按鈕
+  if (currentUser) {
+    const isOwner = currentRole === 'admin' || (p.user_id && p.user_id === currentUser.id);
+    if (isOwner) {
+      actions.innerHTML = `
+        <button onclick="openReviews()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--border);background:white;color:var(--mid);font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">⭐ 評價</button>
+        <button onclick="openEditProduct()" style="flex:1;padding:12px;border-radius:12px;border:0.5px solid var(--brown-l);background:white;color:var(--brown);font-size:14px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✏️ 編輯</button>`;
+    }
+  }
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById('s-detail').classList.add('on');
@@ -1018,7 +957,7 @@ function openEditProduct() {
 }
 
 function editPreviewImage(input) {
-  if(input.files && input.files[0]) {
+  if (input.files && input.files[0]) {
     editImageFile = input.files[0];
     const reader = new FileReader();
     reader.onload = e => {
@@ -1030,38 +969,46 @@ function editPreviewImage(input) {
 }
 
 async function saveEditProduct() {
-  if(!currentProduct) return;
+  if (!currentProduct) return;
   showToast('儲存中...');
-
   let imageUrl = currentProduct.image || '';
-  if(editImageFile) {
+  if (editImageFile) {
     try { imageUrl = await uploadImage(editImageFile); } catch(e) { showToast('圖片上傳失敗'); return; }
   }
-
-  const {error} = await sb.from('products').update({
-    name: document.getElementById('edit-prod-name').value.trim(),
-    description: document.getElementById('edit-prod-desc').value.trim(),
-    price: parseInt(document.getElementById('edit-prod-price').value),
-    stock: parseInt(document.getElementById('edit-prod-stock').value),
-    image: imageUrl
-  }).eq('id', currentProduct.id);
-
-  if(error) { showToast('儲存失敗：' + error.message); return; }
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${currentProduct.id}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      name: document.getElementById('edit-prod-name').value.trim(),
+      description: document.getElementById('edit-prod-desc').value.trim(),
+      price: parseInt(document.getElementById('edit-prod-price').value),
+      stock: parseInt(document.getElementById('edit-prod-stock').value),
+      image: imageUrl
+    })
+  });
+  if (!res.ok) { showToast('儲存失敗'); return; }
   showToast('已儲存！🌿');
   setTimeout(() => switchTab('home'), 1500);
 }
 
 function confirmDeleteProduct() {
-  if(confirm('確定要刪除這個商品嗎？')) deleteProduct(currentProduct.id);
+  if (confirm('確定要刪除這個商品嗎？')) deleteProduct(currentProduct.id);
 }
 
-// 圖片預覽
 let selectedImageFile = null;
 
 function previewImage(input) {
-  if(input.files && input.files[0]) {
+  if (input.files && input.files[0]) {
     const file = input.files[0];
-    if(file.size > 5 * 1024 * 1024) { showToast('圖片不能超過 5MB！'); return; }
+    if (file.size > 5 * 1024 * 1024) { showToast('圖片不能超過 5MB！'); return; }
     selectedImageFile = file;
     const reader = new FileReader();
     reader.onload = e => {
@@ -1084,12 +1031,11 @@ async function uploadImage(file) {
   const ext = file.name.split('.').pop();
   const fileName = `${Date.now()}.${ext}`;
   const {error} = await sb.storage.from('products-images').upload(fileName, file);
-  if(error) throw error;
+  if (error) throw error;
   const {data} = sb.storage.from('products-images').getPublicUrl(fileName);
   return data.publicUrl;
 }
 
-// 新增商品
 async function addProduct() {
   const name = document.getElementById('add-name').value.trim();
   const category = document.getElementById('add-category').value;
@@ -1098,39 +1044,38 @@ async function addProduct() {
   const desc = document.getElementById('add-desc').value.trim();
   const seller = document.getElementById('add-seller').value.trim();
   const location = document.getElementById('add-location').value.trim();
-
-  if(!name) { showToast('請填寫商品名稱！'); return; }
-  if(!category) { showToast('請選擇品種分類！'); return; }
-  if(!priceStr || isNaN(price)) { showToast('請填寫正確的售價！'); return; }
-  if(!seller) { showToast('請填寫賣家名稱！'); return; }
-
+  if (!name) { showToast('請填寫商品名稱！'); return; }
+  if (!category) { showToast('請選擇品種分類！'); return; }
+  if (!priceStr || isNaN(price)) { showToast('請填寫正確的售價！'); return; }
+  if (!seller) { showToast('請填寫賣家名稱！'); return; }
   showToast('上架中...');
-
   let imageUrl = '';
-  if(selectedImageFile) {
-    try {
-      imageUrl = await uploadImage(selectedImageFile);
-    } catch(e) {
-      showToast('圖片上傳失敗，請再試一次');
-      return;
-    }
+  if (selectedImageFile) {
+    try { imageUrl = await uploadImage(selectedImageFile); }
+    catch(e) { showToast('圖片上傳失敗，請再試一次'); return; }
   }
-
-  const {error} = await sb.from('products').insert([{
-    name, category, price,
-    unit: selectedUnit || '隻',
-    description: desc,
-    seller, location,
-    stock: stockVal || 1,
-    image: imageUrl,
-    user_id: currentUser ? currentUser.id : null
-  }]);
-
-  if(error) {
-    showToast('上架失敗：' + error.message);
-    return;
-  }
-
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      name, category, price,
+      unit: selectedUnit || '隻',
+      description: desc,
+      seller, location,
+      stock: stockVal || 1,
+      image: imageUrl,
+      user_id: currentUser ? currentUser.id : null
+    })
+  });
+  if (!res.ok) { showToast('上架失敗'); return; }
   showToast('商品上架成功！🌿');
   document.getElementById('add-name').value = '';
   document.getElementById('add-price').value = '';
@@ -1147,33 +1092,25 @@ async function addProduct() {
   document.getElementById('img-input').value = '';
   document.getElementById('img-preview').style.display = 'none';
   document.getElementById('photo-upload-area').style.display = 'block';
-  loadMyProducts();
-  setTimeout(() => {
-    switchTab('home');
-    loadCounts();
-  }, 2000);
-  document.getElementById('add-stock').value = '1';
-  document.querySelectorAll('.tag').forEach(t => t.classList.remove('sel'));
-  selectedCat = '';
-  document.getElementById('add-category').value = '';
-  loadMyProducts();
-  // 3秒後自動跳回首頁
-  setTimeout(() => {
-    switchTab('home');
-    loadCounts();
-  }, 2000);
-  document.getElementById('add-stock').value = '1';
-  document.querySelectorAll('.tag').forEach(t => t.classList.remove('sel'));
-  selectedCat = '';
-  document.getElementById('add-category').value = '';
   switchSellerTab('products');
   loadMyProducts();
+  setTimeout(() => { switchTab('home'); loadCounts(); }, 2000);
 }
 
-// 載入我的商品
 async function loadMyProducts() {
-  const {data} = await sb.from('products').select('*').order('created_at', {ascending: false});
-  if(!data || data.length === 0) {
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  // admin 看全部，seller 只看自己的
+  let url = `${SUPABASE_URL}/rest/v1/products?select=*&order=created_at.desc`;
+  if (currentRole !== 'admin' && currentUser) {
+    url += `&user_id=eq.${currentUser.id}`;
+  }
+  const res = await fetch(url, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
+  });
+  const data = await res.json();
+  if (!Array.isArray(data) || data.length === 0) {
     document.getElementById('my-products-list').innerHTML = `<div class="empty"><div class="ei">🌱</div>還沒有商品<br>點「新增商品」開始分享吧！</div>`;
     document.getElementById('stat-count').textContent = '0';
     document.getElementById('stat-stock').textContent = '0';
@@ -1186,7 +1123,7 @@ async function loadMyProducts() {
       <div class="product-thumb ${catClass[p.category]||'default'}">${catEmoji[p.category]||'🌿'}</div>
       <div class="product-body">
         <div class="product-name">${p.name}</div>
-        <div class="product-meta">${p.category} · 庫存 ${p.stock} ${p.unit}</div>
+        <div class="product-meta">${p.category} · 庫存 ${p.stock} ${p.unit}${currentRole==='admin'?' · '+p.seller:''}</div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <div class="product-price">$${p.price} <span style="font-size:10px;font-weight:400;color:var(--light)">/ ${p.unit}</span></div>
           <span class="p-badge on">上架中</span>
@@ -1198,41 +1135,78 @@ async function loadMyProducts() {
     </div>`).join('');
 }
 
-// 刪除商品
 async function deleteProduct(id) {
-  if(!confirm('確定要刪除這個商品嗎？')) return;
-  const {error} = await sb.from('products').delete().eq('id', id);
-  if(error) { showToast('刪除失敗'); return; }
+  if (!confirm('確定要刪除這個商品嗎？')) return;
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/products?id=eq.${id}`, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
+  });
+  if (!res.ok) { showToast('刪除失敗'); return; }
   showToast('已刪除商品');
   loadMyProducts();
 }
 
-// UI 函式
+// ===== ROLE 管理 =====
+function applyRole(role) {
+  const sellerTab = document.getElementById('bn-seller');
+  const badge = document.getElementById('profile-role-badge');
+
+  // buyer 隱藏飼主中心
+  if (role === 'buyer') {
+    sellerTab.style.display = 'none';
+  } else {
+    sellerTab.style.display = 'flex';
+  }
+
+  // 在個人頁顯示 role 標籤
+  if (badge) {
+    if (role === 'admin') {
+      badge.textContent = '管理員';
+      badge.style.background = '#F0EBF8';
+      badge.style.color = '#7B5EA7';
+      badge.style.display = 'inline-block';
+    } else if (role === 'seller') {
+      badge.textContent = '飼主';
+      badge.style.background = '#FEF3E2';
+      badge.style.color = '#C07830';
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+// ===== UI 函式 =====
 function switchTab(tab) {
   if (!currentUser && (tab === 'profile' || tab === 'seller')) {
     showToast('請先登入才能查看此頁面');
     goAuth();
     return;
   }
-
+  if (tab === 'seller' && currentRole === 'buyer') {
+    showToast('你目前是買家身份，無法使用飼主中心');
+    return;
+  }
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.querySelectorAll('.bn').forEach(b => b.classList.remove('on'));
   document.getElementById('s-' + tab).classList.add('on');
   const bn = document.getElementById('bn-' + tab);
-  if(bn) bn.classList.add('on');
-  // 恢復底部導覽列
+  if (bn) bn.classList.add('on');
   document.querySelector('.bnav').style.display = 'flex';
   window.scrollTo(0,0);
-  if(tab === 'seller') loadMyProducts();
-  if(tab === 'messages') loadMessages();
-  if(tab === 'home') loadCounts();
+  if (tab === 'seller') loadMyProducts();
+  if (tab === 'messages') loadMessages();
+  if (tab === 'home') loadCounts();
 }
 
 function switchSellerTab(tab) {
   ['products','add'].forEach(t => {
     document.getElementById('seller-tab-' + t).style.display = t === tab ? 'block' : 'none';
     const el = document.getElementById('stab-' + t);
-    if(el) {
+    if (el) {
       el.style.color = t === tab ? 'var(--brown)' : 'var(--light)';
       el.style.borderBottom = t === tab ? '2px solid var(--brown)' : '2px solid transparent';
       el.style.fontWeight = t === tab ? '500' : '400';
@@ -1277,7 +1251,6 @@ function showToast(msg) {
   setTimeout(() => t.style.display = 'none', 2500);
 }
 
-// 個人資料
 let profileData = {name:'',location:'台中市',phone:'',email:'',avatar:'🐟'};
 
 function loadProfile() {
@@ -1291,18 +1264,6 @@ function loadProfile() {
   document.getElementById('edit-email').value = profileData.email || '';
 }
 
-function togglePasswordSection() {
-  const sec = document.getElementById('pw-section');
-  const icon = document.getElementById('pw-toggle-icon');
-  if(sec.style.display === 'none') {
-    sec.style.display = 'block';
-    icon.textContent = '收起 ‹';
-  } else {
-    sec.style.display = 'none';
-    icon.textContent = '展開 ›';
-  }
-}
-
 function showProfileEdit() {
   loadProfile();
   showScreen('s-profile-edit');
@@ -1311,7 +1272,7 @@ function showProfileEdit() {
 function saveProfile() {
   const newPw = document.getElementById('edit-new-pw').value;
   const confirmPw = document.getElementById('edit-confirm-pw').value;
-  if(newPw && newPw !== confirmPw) { showToast('新密碼不一致，請再確認'); return; }
+  if (newPw && newPw !== confirmPw) { showToast('新密碼不一致，請再確認'); return; }
   profileData.name = document.getElementById('edit-name').value || profileData.name;
   profileData.location = document.getElementById('edit-location').value || profileData.location;
   profileData.phone = document.getElementById('edit-phone').value;
@@ -1335,13 +1296,12 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   window.scrollTo(0,0);
-  // 確保底部導覽永遠顯示
   document.querySelector('.bnav').style.display = 'flex';
 }
 
 function toggleSwitch(el) {
   const knob = el.querySelector('div');
-  if(el.classList.contains('on')) {
+  if (el.classList.contains('on')) {
     el.classList.remove('on');
     el.style.background = '#D0C8C0';
     knob.style.left = '3px';
@@ -1352,12 +1312,9 @@ function toggleSwitch(el) {
   }
 }
 
-
-
-// ===== 搜尋 =====
 function doSearch() {
   const keyword = document.getElementById('search-input').value.trim();
-  if(!keyword) { loadProducts('all'); return; }
+  if (!keyword) { loadProducts('all'); return; }
   document.getElementById('search-input2') && (document.getElementById('search-input2').value = keyword);
   showScreen('s-search');
   performSearch(keyword);
@@ -1365,14 +1322,16 @@ function doSearch() {
 
 function doSearch2() {
   const keyword = document.getElementById('search-input2').value.trim();
-  if(keyword) performSearch(keyword);
+  if (keyword) performSearch(keyword);
 }
 
 async function performSearch(keyword) {
   document.getElementById('search-results').innerHTML = '<div class="loading">搜尋中...</div>';
-  const {data} = await sb.from('products').select('*')
-    .or(`name.ilike.%${keyword}%,seller.ilike.%${keyword}%,category.ilike.%${keyword}%,location.ilike.%${keyword}%`);
-  if(!data || data.length === 0) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/products?select=*&or=name.ilike.%25${encodeURIComponent(keyword)}%25,seller.ilike.%25${encodeURIComponent(keyword)}%25,category.ilike.%25${encodeURIComponent(keyword)}%25,location.ilike.%25${encodeURIComponent(keyword)}%25`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  const data = await res.json();
+  if (!Array.isArray(data) || data.length === 0) {
     document.getElementById('search-count').textContent = `找不到「${keyword}」的結果`;
     document.getElementById('search-results').innerHTML = `<div class="empty"><div class="ei">🔍</div>找不到相關商品</div>`;
     return;
@@ -1381,30 +1340,33 @@ async function performSearch(keyword) {
   document.getElementById('search-results').innerHTML = `<div class="pgrid" style="padding:0 20px 20px;">${data.map(cardHTML).join('')}</div>`;
 }
 
-// ===== 訊息 =====
 let currentChat = null;
 
 async function loadMessages() {
-  if(!currentUser) {
+  if (!currentUser) {
     document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先登入才能查看訊息</div>`;
     return;
   }
   const myName = profileData.name || '';
-  if(!myName) {
-    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先完成個人資料設定才能查看訊息</div>`;
+  if (!myName) {
+    document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>請先完成個人資料設定</div>`;
     return;
   }
-  const {data} = await sb.from('messages').select('*')
-    .or(`sender_name.eq.${myName},receiver_name.eq.${myName}`)
-    .order('created_at', {ascending: false});
-  if(!data || data.length === 0) {
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?select=*&or=sender_name.eq.${encodeURIComponent(myName)},receiver_name.eq.${encodeURIComponent(myName)}&order=created_at.desc`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
+  });
+  const data = await res.json();
+  if (!Array.isArray(data) || data.length === 0) {
     document.getElementById('messages-list').innerHTML = `<div class="empty"><div class="ei">💬</div>還沒有任何訊息</div>`;
     return;
   }
   const chats = {};
   data.forEach(m => {
     const other = m.sender_name === myName ? m.receiver_name : m.sender_name;
-    if(!chats[other]) chats[other] = {name: other, lastMsg: m.content, time: m.created_at, product: m.product_name};
+    if (!chats[other]) chats[other] = {name: other, lastMsg: m.content, time: m.created_at, product: m.product_name};
   });
   document.getElementById('messages-list').innerHTML = Object.values(chats).map(c => `
     <div class="msg-item" onclick="openChatWith('${c.name}','${c.product||''}')">
@@ -1418,7 +1380,7 @@ async function loadMessages() {
 }
 
 async function openChat() {
-  if(!currentUser) { showToast('請先登入才能傳送訊息'); goAuth(); return; }
+  if (!currentUser) { showToast('請先登入才能傳送訊息'); goAuth(); return; }
   openChatWith(currentProduct.seller, currentProduct.name);
 }
 
@@ -1432,11 +1394,15 @@ async function openChatWith(sellerName, productName) {
 async function loadChatMessages() {
   const myName = profileData.name || '';
   const other = currentChat.seller;
-  const {data} = await sb.from('messages').select('*')
-    .or(`and(sender_name.eq.${myName},receiver_name.eq.${other}),and(sender_name.eq.${other},receiver_name.eq.${myName})`)
-    .order('created_at', {ascending: true});
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?select=*&or=and(sender_name.eq.${encodeURIComponent(myName)},receiver_name.eq.${encodeURIComponent(other)}),and(sender_name.eq.${encodeURIComponent(other)},receiver_name.eq.${encodeURIComponent(myName)})&order=created_at.asc`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
+  });
+  const data = await res.json();
   const container = document.getElementById('chat-messages');
-  if(!data || data.length === 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     container.innerHTML = `<div style="text-align:center;color:var(--light);font-size:12px;padding:20px;">開始對話吧！</div>`;
     return;
   }
@@ -1450,23 +1416,34 @@ async function loadChatMessages() {
 
 async function sendMessage() {
   const content = document.getElementById('chat-input').value.trim();
-  if(!content) return;
+  if (!content) return;
   const myName = profileData.name || '匿名用戶';
-  const {error} = await sb.from('messages').insert([{
-    sender_name: myName, receiver_name: currentChat.seller,
-    product_name: currentChat.product, content
-  }]);
-  if(error) { showToast('傳送失敗'); return; }
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      sender_name: myName, receiver_name: currentChat.seller,
+      product_name: currentChat.product, content
+    })
+  });
+  if (!res.ok) { showToast('傳送失敗'); return; }
   document.getElementById('chat-input').value = '';
   loadChatMessages();
 }
 
-// ===== 下單 =====
 let orderQty = 1;
 let orderShippingFee = 150;
 
 function openOrder() {
-  if(!currentUser) { showToast('請先登入才能下單'); goAuth(); return; }
+  if (!currentUser) { showToast('請先登入才能下單'); goAuth(); return; }
   const p = currentProduct;
   orderQty = 1;
   const cls = catClass[p.category]||'default';
@@ -1490,7 +1467,7 @@ function chgOrderQty(d) {
 }
 
 function selectShipping(el, type, fee) {
-  document.querySelectorAll('#s-order .tag').forEach(t=>t.classList.remove('sel'));
+  document.querySelectorAll('#s-order .tag').forEach(t => t.classList.remove('sel'));
   el.classList.add('sel');
   orderShippingFee = fee;
   updateOrderTotal();
@@ -1507,29 +1484,41 @@ async function submitOrder() {
   const name = document.getElementById('order-name').value.trim();
   const phone = document.getElementById('order-phone').value.trim();
   const address = document.getElementById('order-address').value.trim();
-  if(!name||!phone||!address) { showToast('請填寫完整收件資料！'); return; }
+  if (!name||!phone||!address) { showToast('請填寫完整收件資料！'); return; }
   const p = currentProduct;
   const total = p.price*orderQty+orderShippingFee;
-  const {error} = await sb.from('orders').insert([{
-    product_id: p.id, seller: p.seller,
-    buyer_name: name, buyer_phone: phone, buyer_address: address,
-    quantity: orderQty, total_price: total,
-    shipping: document.getElementById('order-shipping').value, status: '待付款'
-  }]);
-  if(error) { showToast('下單失敗：'+error.message); return; }
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      product_id: p.id, seller: p.seller,
+      buyer_name: name, buyer_phone: phone, buyer_address: address,
+      quantity: orderQty, total_price: total,
+      shipping: document.getElementById('order-shipping').value, status: '待付款',
+      buyer_id: currentUser ? currentUser.id : null
+    })
+  });
+  if (!res.ok) { showToast('下單失敗'); return; }
   document.getElementById('order-transfer-info').innerHTML = `
     <div style="font-size:11px;color:var(--brown);font-weight:500;letter-spacing:1px;margin-bottom:10px;">轉帳資訊</div>
     <div style="font-size:13px;color:var(--mid);line-height:2;">賣家：${p.seller}<br>商品：${p.name} × ${orderQty}<br>運費：${orderShippingFee===0?'免費（面交）':'$'+orderShippingFee}<br><strong style="color:var(--brown);">合計：$${total}</strong></div>`;
   showScreen('s-order-success');
 }
 
-// ===== 評價 =====
 let reviewRating = 0;
 
 function openReviews() {
   document.getElementById('review-title').textContent = currentProduct.name + ' 的評價';
   reviewRating = 0;
-  document.querySelectorAll('.star-btn').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('on'));
   document.getElementById('review-comment').value = '';
   loadReviews();
   showScreen('s-reviews');
@@ -1537,7 +1526,7 @@ function openReviews() {
 
 function selectStar(n) {
   reviewRating = n;
-  document.querySelectorAll('.star-btn').forEach((s,i)=>s.classList.toggle('on',i<n));
+  document.querySelectorAll('.star-btn').forEach((s,i) => s.classList.toggle('on', i<n));
 }
 
 async function loadReviews() {
@@ -1546,7 +1535,7 @@ async function loadReviews() {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
     const data = await res.json();
-    if(!Array.isArray(data) || data.length === 0) {
+    if (!Array.isArray(data) || data.length === 0) {
       document.getElementById('reviews-list').innerHTML = `<div class="empty"><div class="ei">⭐</div>還沒有評價</div>`;
       return;
     }
@@ -1571,10 +1560,10 @@ async function loadReviews() {
 }
 
 async function submitReview() {
-  if(!currentUser) { showToast('請先登入才能評價'); return; }
-  if(!reviewRating) { showToast('請選擇評分！'); return; }
+  if (!currentUser) { showToast('請先登入才能評價'); return; }
+  if (!reviewRating) { showToast('請選擇評分！'); return; }
   const comment = document.getElementById('review-comment').value.trim();
-  if(!comment) { showToast('請填寫評論內容！'); return; }
+  if (!comment) { showToast('請填寫評論內容！'); return; }
   const p = currentProduct;
   const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
   const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
@@ -1590,10 +1579,11 @@ async function submitReview() {
     body: JSON.stringify({
       product_id: p.id, product_name: p.name,
       reviewer_name: profileData.name || '匿名用戶',
-      seller_name: p.seller, rating: reviewRating, comment
+      seller_name: p.seller, rating: reviewRating, comment,
+      reviewer_id: currentUser ? currentUser.id : null
     })
   });
-  if(!res.ok) { showToast('送出失敗'); return; }
+  if (!res.ok) { showToast('送出失敗'); return; }
   showToast('評價已送出！⭐');
   document.getElementById('review-comment').value = '';
   reviewRating = 0;
@@ -1605,26 +1595,25 @@ async function submitReview() {
 let currentUser = null;
 let currentRole = 'buyer';
 
-// 載入 profile 共用函式
 async function fetchAndLoadProfile(uid, showOnboarding) {
   try {
     const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
     const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
     const accessToken = tokenData?.access_token || SUPABASE_KEY;
     const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles?select=*&id=eq.${uid}&limit=1`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${accessToken}`
-      }
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
     });
     const arr = await res.json();
     const data = Array.isArray(arr) ? arr[0] : null;
-    if(data && data.name) {
+    if (data && data.name) {
       profileData.name = data.name || '';
       profileData.location = data.location || '台中市';
       profileData.avatar = data.avatar || '🐟';
+      // ★ role 判斷
+      currentRole = data.role || 'buyer';
+      applyRole(currentRole);
       loadProfile();
-    } else if(showOnboarding) {
+    } else if (showOnboarding) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
       document.getElementById('s-onboarding').classList.add('on');
       document.querySelector('.bnav').style.display = 'none';
@@ -1635,31 +1624,30 @@ async function fetchAndLoadProfile(uid, showOnboarding) {
   }
 }
 
-// 監聽登入狀態（email 登入用）
 sb.auth.onAuthStateChange(async (event, session) => {
-  if(event === 'SIGNED_IN' && session) {
+  if (event === 'SIGNED_IN' && session) {
     currentUser = session.user;
     updateNavForUser();
     await fetchAndLoadProfile(currentUser.id, true);
-  } else if(event === 'SIGNED_OUT') {
+  } else if (event === 'SIGNED_OUT') {
     currentUser = null;
+    currentRole = 'buyer';
+    applyRole('buyer');
     updateNavForGuest();
   }
 });
 
 function updateNavForUser() {
   const btn = document.getElementById('nav-auth-btn');
-  if(btn) { btn.textContent = '我的'; btn.onclick = () => switchTab('profile'); }
+  if (btn) { btn.textContent = '我的'; btn.onclick = () => switchTab('profile'); }
 }
 
 function updateNavForGuest() {
   const btn = document.getElementById('nav-auth-btn');
-  if(btn) { btn.textContent = '登入'; btn.onclick = goAuth; }
+  if (btn) { btn.textContent = '登入'; btn.onclick = goAuth; }
 }
 
-function goAuth() {
-  showScreen('s-auth');
-}
+function goAuth() { showScreen('s-auth'); }
 
 function switchAuthTab(tab) {
   document.getElementById('auth-login').style.display = tab === 'login' ? 'block' : 'none';
@@ -1671,9 +1659,9 @@ function switchAuthTab(tab) {
 async function loginWithEmail() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
-  if(!email || !password) { showToast('請填寫 Email 和密碼'); return; }
+  if (!email || !password) { showToast('請填寫 Email 和密碼'); return; }
   const {error} = await sb.auth.signInWithPassword({email, password});
-  if(error) { showToast('登入失敗：' + error.message); return; }
+  if (error) { showToast('登入失敗：' + error.message); return; }
   showToast('登入成功！🌿');
   switchTab('home');
 }
@@ -1682,51 +1670,18 @@ async function registerWithEmail() {
   const email = document.getElementById('reg-email').value.trim();
   const password = document.getElementById('reg-password').value;
   const password2 = document.getElementById('reg-password2').value;
-  if(!email || !password) { showToast('請填寫所有欄位'); return; }
-  if(password !== password2) { showToast('兩次密碼不一致'); return; }
-  if(password.length < 8) { showToast('密碼至少需要 8 個字元'); return; }
+  if (!email || !password) { showToast('請填寫所有欄位'); return; }
+  if (password !== password2) { showToast('兩次密碼不一致'); return; }
+  if (password.length < 8) { showToast('密碼至少需要 8 個字元'); return; }
   const {error} = await sb.auth.signUp({email, password});
-  if(error) { showToast('註冊失敗：' + error.message); return; }
+  if (error) { showToast('註冊失敗：' + error.message); return; }
   showToast('註冊成功！請查收驗證信 📧');
   switchAuthTab('login');
 }
 
-async function loginWithMagicLink() {
-  const email = document.getElementById('magic-email').value.trim();
-  if(!email) { showToast('請輸入 Email'); return; }
-  const res = await fetch(`${SUPABASE_URL}/auth/v1/magiclink`, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email,
-      options: { emailRedirectTo: 'https://elife.wangshiang19890625.workers.dev' }
-    })
-  });
-  if(res.ok) {
-    document.getElementById('magic-sent').style.display = 'block';
-    showToast('登入連結已寄出！');
-  } else {
-    showToast('寄送失敗，請再試一次');
-  }
-}
-
-function showEmailPasswordLogin() {
-  document.getElementById('auth-login').style.display = 'none';
-  document.getElementById('auth-email-pw').style.display = 'block';
-}
-
-function showMagicLink() {
-  document.getElementById('auth-email-pw').style.display = 'none';
-  document.getElementById('auth-login').style.display = 'block';
-}
-
 async function loginWithGoogle() {
-  // 偵測 LINE / Facebook 內建瀏覽器，Google 不允許在這些環境登入
   const ua = navigator.userAgent;
-  if(ua.includes('Line') || ua.includes('FBAN') || ua.includes('FB_IAB')) {
+  if (ua.includes('Line') || ua.includes('FBAN') || ua.includes('FB_IAB')) {
     showToast('請用 Chrome 或 Safari 開啟網站再登入 Google');
     return;
   }
@@ -1734,7 +1689,7 @@ async function loginWithGoogle() {
     provider: 'google',
     options: { redirectTo: 'https://elife.wangshiang19890625.workers.dev' }
   });
-  if(error) showToast('Google 登入失敗');
+  if (error) showToast('Google 登入失敗');
 }
 
 function selectRole(role) {
@@ -1742,7 +1697,7 @@ function selectRole(role) {
   document.getElementById('ob-role').value = role;
   const buyer = document.getElementById('role-buyer');
   const seller = document.getElementById('role-seller');
-  if(role === 'buyer') {
+  if (role === 'buyer') {
     buyer.style.border = '0.5px solid var(--brown)';
     buyer.style.background = 'var(--cream)';
     seller.style.border = '0.5px solid var(--border)';
@@ -1756,49 +1711,60 @@ function selectRole(role) {
 }
 
 async function saveOnboarding() {
-  if(!currentUser) return;
+  if (!currentUser) return;
   const name = document.getElementById('ob-name').value.trim();
   const location = document.getElementById('ob-location').value.trim();
-  if(!name) { showToast('請填寫暱稱'); return; }
-  const {error} = await sb.from('profiles').upsert({
-    id: currentUser.id,
-    name,
-    location,
-    line_id: document.getElementById('ob-line').value.trim(),
-    role: document.getElementById('ob-role').value,
-    avatar: '🐟'
+  if (!name) { showToast('請填寫暱稱'); return; }
+  const role = document.getElementById('ob-role').value;
+  const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
+  const tokenData = tokenKey ? JSON.parse(localStorage.getItem(tokenKey)) : null;
+  const accessToken = tokenData?.access_token || SUPABASE_KEY;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/profiles`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
+    body: JSON.stringify({
+      id: currentUser.id, name, location,
+      line_id: document.getElementById('ob-line').value.trim(),
+      role, avatar: '🐟'
+    })
   });
-  if(error) { showToast('儲存失敗，請再試一次'); return; }
-
+  if (!res.ok) { showToast('儲存失敗，請再試一次'); return; }
   profileData.name = name;
   profileData.location = location;
   profileData.avatar = '🐟';
+  currentRole = role;
+  applyRole(role);
   localStorage.setItem('chuyuu_profile', JSON.stringify(profileData));
   loadProfile();
-
   showToast('歡迎加入易生！🌿');
   switchTab('home');
 }
 
 async function doLogout() {
-  if(!confirm('確定要登出嗎？')) return;
+  if (!confirm('確定要登出嗎？')) return;
   const {error} = await sb.auth.signOut();
-  if(error) console.error('Sign out error:', error);
-
+  if (error) console.error('Sign out error:', error);
   localStorage.removeItem('chuyuu_profile');
   profileData = {name:"",location:"台中市",phone:"",email:"",avatar:"🐟"};
+  currentRole = 'buyer';
+  applyRole('buyer');
   loadProfile();
-
   currentUser = null;
   updateNavForGuest();
   showToast('已登出');
   switchTab('home');
 }
 
-// 偵測 LINE 瀏覽器，提示用外部瀏覽器開啟
+function goBack() { history.back(); }
+
 (function() {
   const ua = navigator.userAgent;
-  if(ua.includes('Line')) {
+  if (ua.includes('Line')) {
     const banner = document.createElement('div');
     banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#06C755;color:white;padding:12px 16px;font-size:13px;font-family:"Noto Sans TC",sans-serif;text-align:center;';
     banner.innerHTML = `📱 請點右上角 <b>⋯</b> → <b>在瀏覽器中開啟</b>，以使用完整功能`;
@@ -1806,36 +1772,24 @@ async function doLogout() {
   }
 })();
 
-// ===== 初始載入 =====
 loadCounts();
 loadProfile();
+// 初始隱藏飼主中心（登入後由 applyRole 決定）
+document.getElementById('bn-seller').style.display = 'none';
 
-// 處理登入狀態
 async function initAuth() {
-  // 從 localStorage 讀取 session token
   const tokenKey = Object.keys(localStorage).find(k => k.includes('supabase') && k.includes('auth-token'));
-  if(!tokenKey) {
-    updateNavForGuest();
-    return;
-  }
+  if (!tokenKey) { updateNavForGuest(); return; }
   try {
     const tokenData = JSON.parse(localStorage.getItem(tokenKey));
     const accessToken = tokenData?.access_token;
-    if(!accessToken) {
-      updateNavForGuest();
-      return;
-    }
-    // 用 fetch 直接驗證 token
+    if (!accessToken) { updateNavForGuest(); return; }
     const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${accessToken}`
-      }
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${accessToken}` }
     });
-    if(!res.ok) {
-      // Token 無效，清除
+    if (!res.ok) {
       Object.keys(localStorage).forEach(k => {
-        if(k.includes('supabase') || k.includes('sb-') || k.includes('chuyuu')) localStorage.removeItem(k);
+        if (k.includes('supabase') || k.includes('sb-') || k.includes('chuyuu')) localStorage.removeItem(k);
       });
       updateNavForGuest();
       return;
